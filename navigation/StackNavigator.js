@@ -11,6 +11,10 @@ import ChatScreen from './stackScreens/ChatScreen';
 const Stack = createStackNavigator();
 
 
+
+const ProfileStackNavigator = () =>{
+    
+}
 const CameraStackNavigator = () =>{
     return(
         <Stack.Navigator>
