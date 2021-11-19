@@ -3,12 +3,12 @@ import axios from 'axios';
 import {View, Text, StyleSheet, TextInput, Button, Alert, Modal, Pressable,FlatList, TouchableOpacity} from 'react-native';
 
 //apikey
-const apiKey = 'S2BJOY1UVBWYITJ13CYF'
+const apiKey = process.env.REACT_APP_API_KEY
 
 class ApiCalls extends Component{
    constructor(props){
        super(props);
-  
+   
    this.state = {
     brawlId: "",
     data:[],
@@ -37,6 +37,7 @@ class ApiCalls extends Component{
      return fetch(`https://api.brawlhalla.com/player/${this.state.brawlId}/stats?api_key=`+ apiKey)
                  .then(response => response.json())
                  .then(responseJson =>{
+                    console.log(process.env.REACT_APP_API_KEY);
                      this.setState({
                         data: responseJson,
                         legendData: responseJson.legends,

@@ -56,3 +56,6 @@ dist/
 
 # txt files
 gitCommands.txt
+
+#.env file
+.env
