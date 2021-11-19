@@ -17,17 +17,18 @@ export default class ChatScreen extends Component {
     };
   }
 
+
+  //Connecting socket with local ip
  connectSocket = () =>{
-   
   this.socket = io(SOCKET_URL, {
     transports: ['websocket'],
     reconnectionAttempts: 15 
   });
   this.setState({connected: true})
-  
  }
   
 
+  //Subbmitting chattmessages and then clears the state after the message is sent
   submitChatMessage(){
       this.socket.emit("chat message", this.state.chatMessage)
       this.setState({ chatMessage: ""})
@@ -35,6 +36,7 @@ export default class ChatScreen extends Component {
   }
 
 
+  //Creating an event for chat messages and
   componentDidMount() {
     this.connectSocket();
    

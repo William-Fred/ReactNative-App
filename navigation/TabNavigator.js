@@ -6,6 +6,8 @@ import { InfoStackNavigator, CameraStackNavigator, HomeStackNavigator } from "./
 import ChatScreen from './stackScreens/ChatScreen';
 const Tab = createBottomTabNavigator();
 
+
+//Bottom tabs 
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
@@ -30,7 +32,7 @@ const BottomTabNavigator = () => {
             return <Ionicons name={iconName} size={size} color={color}></Ionicons>
         },
     })}>
-
+      
       <Tab.Screen name="Home" component={HomeStackNavigator} />
       <Tab.Screen name="Api" component={InfoStackNavigator} />
       <Tab.Screen name="Camera" component={CameraStackNavigator} />

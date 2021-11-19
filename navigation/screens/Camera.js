@@ -49,6 +49,7 @@ export default function CameraScreen({navigation}){
             console.log(photo.uri)
         }
     }
+    //Pick images from media library
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -56,7 +57,6 @@ export default function CameraScreen({navigation}){
           aspect: [1, 1],
           quality: 1,
         });
-    
         console.log(result);
     
         if (result.cancelled === false) {
@@ -64,21 +64,14 @@ export default function CameraScreen({navigation}){
           console.log(result.uri)
         }
       };
+
+      //Toggle between full scale picture and small size picture when the user has taken a pciture from camera 
     const toogleZoom = () =>{
         console.log("toogle")
         setIsZoomed(
             previousState => !previousState
         )
     }
-    // const handleSave = async(photo) =>{
-    //     const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    //     if(status === "granted"){
-    //         const assert = await MediaLibrary.createAssetAsync(photo);
-    //         MediaLibrary.createAlbumAsync('Tutorial', assert);
-    //     }else{
-    //         console.log("no permission")
-    //     }
-    // }
 
     if(hasPermission === null || hasGalleryPermission === false){
         return <View></View>
@@ -108,7 +101,6 @@ export default function CameraScreen({navigation}){
                                         : Camera.Constants.Type.back
                                     );
                                 }}>
-                                    {/* <Text style={{fontSize: 20, marginBottom: 10, color: 'white'}}> Flip </Text> */}
                                 </Ionicons>
                                 <View style={{flex : 3, flexDirection: 'row'}}>
                                 <Pressable
@@ -134,17 +126,18 @@ export default function CameraScreen({navigation}){
                                         </View>
                             </View>
                     </View>
-                    {image && 
-                    <TouchableOpacity
-                    onPress={toogleZoom}
-                    style={isZoomed ? styles.largeImage : styles.smallImage}>
-                    <Image 
-                    source ={{uri: image}} 
-                    style={isZoomed ? styles.largeImage : styles.smallImage}
-                    />
-                    {isZoomed && <Text style={{position: 'absolute', left: '50%', top: '50%'}}>Go back</Text>}
-                    </TouchableOpacity>
-                    }
+                     {/* Displaying image */}
+                        {image && 
+                        <TouchableOpacity
+                        onPress={toogleZoom}
+                        style={isZoomed ? styles.largeImage : styles.smallImage}>
+                        <Image 
+                        source ={{uri: image}} 
+                        style={isZoomed ? styles.largeImage : styles.smallImage}
+                        />
+                        {isZoomed && <Text style={{position: 'absolute', left: '50%', top: '50%'}}>Go back</Text>}
+                        </TouchableOpacity>
+                        }
                     
               </View>
           </Camera>

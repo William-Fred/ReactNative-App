@@ -15,6 +15,8 @@ const Stack = createStackNavigator();
 const ProfileStackNavigator = () =>{
     
 }
+
+//Stack for camera views
 const CameraStackNavigator = () =>{
     return(
         <Stack.Navigator>
@@ -23,6 +25,7 @@ const CameraStackNavigator = () =>{
         </Stack.Navigator>
     )
 }
+//Stack for info views
 const InfoStackNavigator = () =>{
     return(
     <Stack.Navigator>
@@ -31,6 +34,8 @@ const InfoStackNavigator = () =>{
     </Stack.Navigator>
     )
 }
+
+//Stack for Home views
 const HomeStackNavigator = () =>{
     return(
         <Stack.Navigator>
