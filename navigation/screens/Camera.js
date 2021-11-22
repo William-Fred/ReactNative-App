@@ -10,7 +10,6 @@ import { Platform } from 'expo-modules-core';
 
 
 export default function CameraScreen({navigation}){
-
     
     const [hasGalleryPermission, setGalleryPermission] = useState(null)
     const [hasPermission, setHasPermission] = useState(null)
