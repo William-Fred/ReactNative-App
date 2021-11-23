@@ -65,17 +65,17 @@ export default class ChatScreen extends Component {
     ));
     return (
         <KeyboardAvoidingView
-        style={styles.container}
-        behavior="height"
-        keyboardVerticalOffset={keyboardVerticalOffset}>
-         {chatMessages}
-        <TextInput autoCorrect={false}
-        style={styles.textInput}
-        onSubmitEditing={() =>{ this.submitChatMessage()}}
-        value={this.state.chatMessage}
-        placeholder="Text message.."
-        onChangeText={chatMessage =>{this.setState({ chatMessage })
-        }}></TextInput>
+          style={styles.container}
+          behavior="height"
+          keyboardVerticalOffset={keyboardVerticalOffset}>
+          {chatMessages}
+          <TextInput autoCorrect={false}
+          style={styles.textInput}
+          onSubmitEditing={() =>{ this.submitChatMessage()}}
+          value={this.state.chatMessage}
+          placeholder="Text message.."
+          onChangeText={chatMessage =>{this.setState({ chatMessage })
+          }}></TextInput>
         </KeyboardAvoidingView>
       
     );

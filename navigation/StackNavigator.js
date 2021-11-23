@@ -7,14 +7,10 @@ import CameraScreen from "./screens/Camera";
 import savePhoto from "./screens/savePhoto";
 import LegendDetails from "./stackScreens/legendDetailScreen";
 import ChatScreen from './stackScreens/ChatScreen';
+import ProfilePage from './screens/ProfilePage'
 
 const Stack = createStackNavigator();
 
-
-
-const ProfileStackNavigator = () =>{
-    
-}
 
 //Stack for camera views
 const CameraStackNavigator = () =>{
@@ -22,6 +18,14 @@ const CameraStackNavigator = () =>{
         <Stack.Navigator>
         <Stack.Screen name="Camera" component={CameraScreen} />
         <Stack.Screen name="savePhoto" component={savePhoto} />
+        </Stack.Navigator>
+    )
+}
+//Stack for profilepage
+const ProfileStackNavigator = () =>{
+    return(
+        <Stack.Navigator>
+            <Stack.Screen name="ProfilePage" component={ProfilePage} />
         </Stack.Navigator>
     )
 }
@@ -44,4 +48,4 @@ const HomeStackNavigator = () =>{
         </Stack.Navigator>
     )
 }
-export { CameraStackNavigator, HomeStackNavigator, InfoStackNavigator}  ;
+export { CameraStackNavigator, HomeStackNavigator, InfoStackNavigator, ProfileStackNavigator}  ;

@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
-import { InfoStackNavigator, CameraStackNavigator, HomeStackNavigator } from "./StackNavigator";
+import { InfoStackNavigator, CameraStackNavigator, HomeStackNavigator, ProfileStackNavigator } from "./StackNavigator";
 import ChatScreen from './stackScreens/ChatScreen';
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +28,9 @@ const BottomTabNavigator = () => {
             else if(RouteName === 'Camera'){
                 iconName = focused ? 'camera' : 'camera-outline'
             }
+            else if(RouteName === 'Profile'){
+              iconName = focused ? 'person' : 'person-outline'
+            }
 
             return <Ionicons name={iconName} size={size} color={color}></Ionicons>
         },
@@ -36,6 +39,7 @@ const BottomTabNavigator = () => {
       <Tab.Screen name="Home" component={HomeStackNavigator} />
       <Tab.Screen name="Api" component={InfoStackNavigator} />
       <Tab.Screen name="Camera" component={CameraStackNavigator} />
+      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
     </Tab.Navigator>
   );
 };
