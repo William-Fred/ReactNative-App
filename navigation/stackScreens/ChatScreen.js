@@ -10,7 +10,7 @@ import {
 import { Constants } from "expo";
 import io from "socket.io-client/dist/socket.io";
 
-const SOCKET_URL = "http://192.168.0.4:3000";
+const SOCKET_URL = "http://193.10.192.230:3000";
 
 export default class ChatScreen extends Component {
   constructor(props) {

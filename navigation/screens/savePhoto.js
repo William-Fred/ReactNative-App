@@ -65,15 +65,17 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 120,
-    width: 225,
+    width: 230,
     borderWidth: 2,
     borderRadius: 10,
-    marginLeft: 10,
+    marginLeft: 7,
   },
   smallImage: {
-    height: "50%",
-    width: "50%",
+    height: 120,
+    width: 120,
+    borderRadius: 15,
   },
+
   largeImage: {
     height: "100%",
     width: "100%",
