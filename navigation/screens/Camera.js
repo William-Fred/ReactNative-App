@@ -12,6 +12,7 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
+import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
 import { Platform } from "expo-modules-core";
@@ -68,6 +69,14 @@ export default function CameraScreen({ navigation }) {
     }
   };
 
+  const maniPulateImage = async () => {
+    const manipResult = await manipulateAsync(image, [{ rotate: 0 }], {
+      compress: 0.1,
+      format: SaveFormat.JPEG,
+    });
+    console.log(manipResult.uri);
+    // setImage(manipResult);
+  };
   //Toggle between full scale picture and small size picture when the user has taken a pciture from camera
   const toogleZoom = () => {
     console.log("toogle");
@@ -98,7 +107,12 @@ export default function CameraScreen({ navigation }) {
                 onPress={() => pickImage()}
               ></Ionicons>
             </View>
-
+            <View>
+              <Button
+                title="compress"
+                onPress={() => maniPulateImage()}
+              ></Button>
+            </View>
             <View>
               <Pressable style={styles.buttton_parent}>
                 <Pressable

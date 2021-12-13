@@ -10,17 +10,20 @@ import {
 import { Constants } from "expo";
 import io from "socket.io-client/dist/socket.io";
 
-const SOCKET_URL = "http://193.10.192.230:3000";
+const SOCKET_URL = "http://192.168.0.4:3000";
+// const {user}  = route.params;
 
 export default class ChatScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      user: this.props.route.params.users,
       connected: false,
       chatMessage: "",
       chatMessages: [],
     };
+    console.log(this.state.user);
   }
 
   //Connecting socket with local ip

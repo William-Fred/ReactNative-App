@@ -6,8 +6,10 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
 export default function savePhoto(props) {
   console.log(props.route.params.image);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -16,6 +18,28 @@ export default function savePhoto(props) {
   const toogleZoom = () => {
     console.log("toogle");
     setIsZoomed((previousState) => !previousState);
+  };
+
+  const saveImage = () => {
+    const id = 0;
+    const fileToUpload = props.route.params.image;
+    const data = new FormData();
+    data.append("image", fileToUpload);
+    fetch("http://192.168.0.4:5000/api/Image/Image", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+      body: data,
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -32,12 +56,15 @@ export default function savePhoto(props) {
           {isZoomed && (
             <Ionicons name="arrow-back" style={styles.icon}></Ionicons>
           )}
-          {/* <Image source={{ uri: props.route.params.image }}></Image> */}
         </TouchableOpacity>
         <TextInput
           placeholder="Type in image text..."
           style={styles.textInput}
         ></TextInput>
+
+        <View>
+          <Button title="Save image" onPress={saveImage}></Button>
+        </View>
       </View>
     </View>
   );
