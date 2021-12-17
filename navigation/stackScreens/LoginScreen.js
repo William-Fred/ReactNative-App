@@ -6,65 +6,28 @@ import {
   TouchableOpacity,
   Image,
   Button,
+  ImageBackground,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FlatList, TextInput } from "react-native-gesture-handler";
-import { useSelector, useDispatch } from "react-redux";
-// import {
-//   getUser,
-//   setUsername,
-//   setPassword,
-//   setUserId,
-//   setEmail,
-//   loggedInUser,
-// } from "../../redux/actions";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 
 export default function LoginScreen({ navigation }) {
-  const [Username, setUsername] = useState("");
+  const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
-  //   const { users, username, password, id, email, user } = useSelector(
-  //     (state) => state.userReducer
-  //   );
+  const [Name, setName] = useState("");
 
-  //   const dispatch = useDispatch();
-
-  const usernameInputRef = createRef();
-  const passwordInputRef = createRef();
-
-  //GetUser
-  //   const getUsers = () => {
-  //     dispatch(getUser());
-  //   };
-
-  const loggInUser = () => {
-    const appUser = {
-      Username: Username,
-      Pass: Password,
-    };
-    fetch("http://192.168.0.4:5000/api/User/Loggin", {
-      method: "POST",
-      headers: {
-        //Header Defination
-        Accept: "application/json",
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(appUser),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        setUser(responseJson[0]);
-        if (
-          responseJson[0].Username === Username &&
-          responseJson[0].Pass === Password
-        ) {
-          navigation.navigate("HomeScreen", { user: responseJson[0] });
-        }
-        // setUserLoggedIn(responseJson);
+  const signIn = () => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(Email, Password)
+      .then((result) => {
+        console.log(result);
+        console.log("err");
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
       });
   };
 
@@ -84,32 +47,23 @@ export default function LoginScreen({ navigation }) {
         <View style={styles.inputContainer}>
           <View style={styles.input}>
             <TextInput
-              placeholder="Username.."
-              placeholderTextColor="#333"
               style={styles.textInput}
-              ref={usernameInputRef}
-              onChangeText={(Username) => setUsername(Username)}
-              onSubmitEditing={
-                usernameInputRef.current && usernameInputRef.current.focus()
-              }
+              placeholder="Email.."
+              onChangeText={(Email) => setEmail(Email)}
             ></TextInput>
+
             <TextInput
               style={styles.textInput}
               placeholder="Password.."
-              placeholderTextColor="#333"
-              secureTextEntry={true}
-              ref={passwordInputRef}
               onChangeText={(Password) => setPassword(Password)}
-              onSubmitEditing={
-                passwordInputRef.current && passwordInputRef.current.focus()
-              }
             ></TextInput>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.loginButton} onPress={loggInUser}>
+              <TouchableOpacity style={styles.loginButton}>
                 <Text style={styles.loginText}>Logg in</Text>
               </TouchableOpacity>
             </View>
           </View>
+
           <View style={styles.bottomTextContainer}>
             <TouchableOpacity>
               <Text style={styles.bottomText}>Forgott password?</Text>
@@ -133,6 +87,20 @@ const styles = StyleSheet.create({
     // height: "100%",
     // width: "100%",
     flex: 1,
+  },
+  imageStyle: {
+    width: "400%",
+    height: "400%",
+    transform: [
+      { translateX: -300 },
+      { translateY: -300 },
+      { rotate: "-45deg" },
+    ],
+    position: "absolute",
+    top: "-100%",
+    left: 0,
+    flex: 1,
+    opacity: 0.1,
   },
   inputContainer: {
     justifyContent: "center",

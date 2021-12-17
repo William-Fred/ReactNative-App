@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "./screens/HomeScreen";
@@ -9,6 +9,8 @@ import ProfilePage from "./screens/ProfilePage";
 import LoginScreen from "./stackScreens/LoginScreen";
 import SignupScreen from "./stackScreens/SignupScreen";
 import ChatUsersScreen from "./stackScreens/ChatUsersScreen";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 
 //create stack navigator
 const Stack = createStackNavigator();
@@ -31,8 +33,7 @@ const ProfileStackNavigator = () => {
   );
 };
 
-//Stack for Home views
-const HomeStackNavigator = () => {
+const authStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -41,10 +42,22 @@ const HomeStackNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Signup" component={SignupScreen} />
+    </Stack.Navigator>
+  );
+};
+//Stack for Home views
+const HomeStackNavigator = () => {
+  return (
+    <Stack.Navigator>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="ChatUsersScreen" component={ChatUsersScreen} />
       <Stack.Screen name="Chat" component={ChatScreen} />
     </Stack.Navigator>
   );
 };
-export { CameraStackNavigator, HomeStackNavigator, ProfileStackNavigator };
+export {
+  CameraStackNavigator,
+  HomeStackNavigator,
+  ProfileStackNavigator,
+  authStack,
+};

@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,55 +9,33 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TextInput } from "react-native-gesture-handler";
-export default function SignupScreen() {
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+export default function SignupScreen({ navigation }) {
+  const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
-  const [Username, setUsername] = useState("");
   const [Password, setPassword] = useState("");
-  const [errorTextEmail, setErrorTextEmail] = useState("");
-  const [errorTextUsername, setErrorTextUsername] = useState("");
-  const [errorTextPassword, setErrorTextPassword] = useState("");
-  const emailInputRef = createRef();
-  const usernameInputRef = createRef();
-  const passwordInputRef = createRef();
 
-  const handleSubmit = () => {
-    if (!Email) {
-      setErrorTextEmail("Fill email");
-    }
-    if (!Username) {
-      //   alert("Please fill username");
-      setErrorTextUsername("Fill username");
-    }
-    if (!Password) {
-      alert("Please fill password");
-    }
-
-    const User = {
-      Email: Email,
-      Username: Username,
-      Pass: Password,
-    };
-    console.log(User);
-    fetch("http://localhost:3117/api/User", {
-      method: "POST",
-      headers: {
-        //Header Defination
-        Accept: "application/json",
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(User),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
+  const signUp = () => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(Email, Password)
+      .then((result) => {
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(firebase.auth().currentUser.uid)
+          .set({
+            Name,
+            Email,
+          });
+        console.log(result);
       })
       .catch((error) => {
-        //Hide Loader
-        // setLoading(false);
-        console.error(error);
+        console.log(error);
       });
   };
-
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -71,42 +49,25 @@ export default function SignupScreen() {
         <View style={styles.inputContainer}>
           <View style={styles.input}>
             <TextInput
-              placeholder="Email.."
-              placeholderTextColor="#333"
               style={styles.textInput}
-              ref={emailInputRef}
+              placeholder="name"
+              onChangeText={(Name) => setName(Name)}
+            ></TextInput>
+
+            <TextInput
+              style={styles.textInput}
+              placeholder="email"
               onChangeText={(Email) => setEmail(Email)}
-              onSubmitEditing={() =>
-                emailInputRef.current && emailInputRef.current.focus()
-              }
             ></TextInput>
-            <Text>{errorTextEmail}</Text>
+
             <TextInput
               style={styles.textInput}
-              placeholder="Username.."
-              placeholderTextColor="#333"
-              ref={usernameInputRef}
-              onChangeText={(Username) => setUsername(Username)}
-              onSubmitEditing={() =>
-                usernameInputRef.current && usernameInputRef.current.focus()
-              }
-            ></TextInput>
-            <Text>{errorTextUsername}</Text>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Password.."
-              placeholderTextColor="#333"
-              ref={passwordInputRef}
+              placeholder="password"
+              secureTextEntry={true}
               onChangeText={(Password) => setPassword(Password)}
-              onSubmitEditing={() =>
-                passwordInputRef.current && passwordInputRef.current.focus()
-              }
             ></TextInput>
-            <Text>{errorTextPassword}</Text>
-            <TouchableOpacity
-              style={styles.signUpButton}
-              onPress={handleSubmit}
-            >
+
+            <TouchableOpacity style={styles.signUpButton} onPress={signUp}>
               <Text style={styles.signUpText}>Sign up!</Text>
             </TouchableOpacity>
           </View>
@@ -171,3 +132,40 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 });
+// const handleSubmit = () => {
+//   if (!Email) {
+//     setErrorTextEmail("Fill email");
+//   }
+//   if (!Username) {
+//     //   alert("Please fill username");
+//     setErrorTextUsername("Fill username");
+//   }
+//   if (!Password) {
+//     alert("Please fill password");
+//   }
+
+//   const User = {
+//     Email: Email,
+//     Username: Username,
+//     Pass: Password,
+//   };
+//   console.log(User);
+//   fetch("http://localhost:3117/api/User", {
+//     method: "POST",
+//     headers: {
+//       //Header Defination
+//       Accept: "application/json",
+//       "Content-Type": "application/json; charset=utf-8",
+//     },
+//     body: JSON.stringify(User),
+//   })
+//     .then((response) => response.json())
+//     .then((responseJson) => {
+//       console.log(responseJson);
+//     })
+//     .catch((error) => {
+//       //Hide Loader
+//       // setLoading(false);
+//       console.error(error);
+//     });
+// };

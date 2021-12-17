@@ -11,7 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 export default function savePhoto(props) {
-  console.log(props.route.params.image);
+  // console.log(props.route.params.image);
   const [isZoomed, setIsZoomed] = useState(false);
 
   //Toggle between full scale picture and small size picture when the user has taken a pciture from camera
@@ -20,27 +20,7 @@ export default function savePhoto(props) {
     setIsZoomed((previousState) => !previousState);
   };
 
-  const saveImage = () => {
-    const id = 0;
-    const fileToUpload = props.route.params.image;
-    const data = new FormData();
-    data.append("image", fileToUpload);
-    fetch("http://192.168.0.4:5000/api/Image/Image", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-      },
-      body: data,
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  const saveImage = async () => {};
 
   return (
     <View style={styles.container}>

@@ -13,35 +13,35 @@ export default function ProfilePage({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [showImage, setShowImage] = useState([]);
 
-  const showImages = () => {
-    fetch("http://192.168.0.4:5000/api/Image", {
-      method: "Get",
-      headers: {
-        //Header Defination
-        Accept: "application/json",
-        "Content-Type": "application/json; charset=utf-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        setShowImage(responseJson[4]);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-  console.log(showImage);
-  useEffect(() => {
-    showImages();
-  }, []);
+  // const showImages = () => {
+  //   fetch("http://192.168.0.4:5000/api/Image", {
+  //     method: "Get",
+  //     headers: {
+  //       //Header Defination
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json; charset=utf-8",
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((responseJson) => {
+  //       console.log(responseJson);
+  //       setShowImage(responseJson[4]);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
+  // console.log(showImage);
+  // useEffect(() => {
+  //   showImages();
+  // }, []);
 
-  const reader = new FileReader();
-  reader.readAsDataURL(showImage.imageFile);
-  reader.onloadend = function () {
-    const base64data = reader.result;
-    console.log(base64data);
-  };
+  // const reader = new FileReader();
+  // reader.readAsDataURL(showImage.imageFile);
+  // reader.onloadend = function () {
+  //   const base64data = reader.result;
+  //   console.log(base64data);
+  // };
 
   return (
     <View style={styles.container}>

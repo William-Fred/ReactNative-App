@@ -6,9 +6,17 @@ import {
   CameraStackNavigator,
   HomeStackNavigator,
   ProfileStackNavigator,
+  authStack,
 } from "./StackNavigator";
 const Tab = createBottomTabNavigator();
 
+const AuthTabNavigator = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="auth" component={authStack} />
+    </Tab.Navigator>
+  );
+};
 //Bottom tabs
 const BottomTabNavigator = () => {
   return (
@@ -36,11 +44,10 @@ const BottomTabNavigator = () => {
         },
       })}
     >
-      {/* <Tab.Screen name="Login" component={AuthStack} /> */}
       <Tab.Screen name="Home" component={HomeStackNavigator} />
       <Tab.Screen name="Camera" component={CameraStackNavigator} />
       <Tab.Screen name="Profile" component={ProfileStackNavigator} />
     </Tab.Navigator>
   );
 };
-export default BottomTabNavigator;
+export { BottomTabNavigator, AuthTabNavigator };

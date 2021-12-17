@@ -11,12 +11,8 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-import { getUser, setUsername, setPassword } from "../../redux/actions";
 
 export default function HomeScreen({ navigation, route }) {
-  console.log(route.params.user);
-  const { user } = route.params;
-
   return (
     <ImageBackground
       source={require("./../../images/nature.jpg")}
@@ -32,9 +28,6 @@ export default function HomeScreen({ navigation, route }) {
               onPress={() => navigation.navigate("ChatUsersScreen")}
             ></Ionicons>
           </View>
-        </View>
-        <View>
-          <Text> Welcome {user.Username}</Text>
         </View>
         <View
           style={{
