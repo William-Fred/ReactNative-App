@@ -8,9 +8,16 @@ import {
   AuthTabNavigator,
 } from "./navigation/TabNavigator";
 
+//REDUX
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import rootReducer from "./redux/reducers/reducers";
+import thunk from "redux-thunk";
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
+//FIREBASE
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBa9ky8NQefKv4J7fqly7_mOfGkc_gKSD8",
   authDomain: "imageappreact.firebaseapp.com",
@@ -57,7 +64,9 @@ function App() {
 
   return (
     <NavigationContainer>
-      <BottomTabNavigator />
+      <Provider store={store}>
+        <BottomTabNavigator />
+      </Provider>
     </NavigationContainer>
   );
 }

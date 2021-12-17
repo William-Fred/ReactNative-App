@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Component } from "react";
 import { useState, useEffect } from "react";
 import { render } from "react-dom";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -11,37 +11,102 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
+//imports for redux
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+//Method fetchUser from redux-actions
+import { fetchUser } from "../../redux/actions/actions";
 
-export default function HomeScreen({ navigation, route }) {
-  return (
-    <ImageBackground
-      source={require("./../../images/nature.jpg")}
-      style={styles.background}
-    >
-      <View style={styles.container}>
-        <View style={styles.topBar}>
-          <Text style={styles.topBarText}>Photo and chat app!</Text>
-          <View style={styles.iconPosition}>
-            <Ionicons
-              style={styles.topBarChatIcon}
-              name="ios-chatbubbles-outline"
-              onPress={() => navigation.navigate("ChatUsersScreen")}
-            ></Ionicons>
+export class HomeScreen extends Component {
+  componentDidMount() {
+    this.props.fetchUser();
+  }
+
+  render() {
+    const { currentUser } = this.props;
+    console.log(currentUser);
+    if (currentUser === undefined) {
+      return (
+        <View>
+          <Text>..</Text>
+        </View>
+      );
+    }
+    return (
+      <ImageBackground
+        source={require("./../../images/nature.jpg")}
+        style={styles.background}
+      >
+        <View style={styles.container}>
+          <View style={styles.topBar}>
+            <Text style={styles.topBarText}>Photo and chat app!</Text>
+            <View style={styles.iconPosition}>
+              <Ionicons
+                style={styles.topBarChatIcon}
+                name="ios-chatbubbles-outline"
+                onPress={() => navigation.navigate("ChatUsersScreen")}
+              ></Ionicons>
+            </View>
+          </View>
+          <View
+            style={{
+              paddingLeft: 120,
+              justifyContent: "center",
+              alignitems: "center",
+            }}
+          >
+            <Text>{currentUser.Name} is logged in</Text>
           </View>
         </View>
-        <View
-          style={{
-            paddingLeft: 120,
-            justifyContent: "center",
-            alignitems: "center",
-          }}
-        >
-          <Text style={{ fontSize: 25, color: "white" }}> </Text>
-        </View>
-      </View>
-    </ImageBackground>
-  );
+      </ImageBackground>
+    );
+  }
 }
+
+const mapStateToProps = (store) => ({
+  currentUser: store.userState.currentUser,
+});
+const mapDispatchProps = (dispatch) =>
+  bindActionCreators({ fetchUser }, dispatch);
+export default connect(mapStateToProps, mapDispatchProps)(HomeScreen);
+
+// function HomeScreen({ navigation, route }) {
+//   const dispatch = useDispatch();
+//   useEffect(() => {
+//     bindActionCreators(fetchUser);
+//   });
+
+//   return (
+//     <ImageBackground
+//       source={require("./../../images/nature.jpg")}
+//       style={styles.background}
+//     >
+//       <View style={styles.container}>
+//         <View style={styles.topBar}>
+//           <Text style={styles.topBarText}>Photo and chat app!</Text>
+//           <View style={styles.iconPosition}>
+//             <Ionicons
+//               style={styles.topBarChatIcon}
+//               name="ios-chatbubbles-outline"
+//               onPress={() => navigation.navigate("ChatUsersScreen")}
+//             ></Ionicons>
+//           </View>
+//         </View>
+//         <View
+//           style={{
+//             paddingLeft: 120,
+//             justifyContent: "center",
+//             alignitems: "center",
+//           }}
+//         ></View>
+//       </View>
+//     </ImageBackground>
+//   );
+// }
+// const mapDispatchProps = (dispatch) =>
+//   bindActionCreators({ fetchUser }, dispatch);
+// export default connect(null, mapDispatchProps)(HomeScreen);
+
 const styles = StyleSheet.create({
   div: {
     backgroundColor: "#333",
