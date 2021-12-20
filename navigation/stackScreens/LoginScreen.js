@@ -163,7 +163,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 100,
     height: 30,
-    textAlign: "center",
     borderWidth: 1,
     borderColor: "#fff",
   },
@@ -171,6 +170,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 14,
     color: "#fff",
+    textAlign: "center",
   },
   signUpButton: {
     color: "#fff",

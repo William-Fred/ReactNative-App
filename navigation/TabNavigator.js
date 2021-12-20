@@ -12,8 +12,26 @@ const Tab = createBottomTabNavigator();
 
 const AuthTabNavigator = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="auth" component={authStack} />
+    <Tab.Navigator
+      initialRouteName="Auth"
+      barStyle={{ backgroundColor: "white" }}
+      screenOptions={({ route }) => ({
+        headerShown: false,
+
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          let RouteName = route.name;
+          color = "#334E58";
+          if (RouteName === "Auth") {
+            iconName = focused ? "person" : "person-outline";
+          }
+          return (
+            <Ionicons name={iconName} size={size} color={color}></Ionicons>
+          );
+        },
+      })}
+    >
+      <Tab.Screen name="Auth" component={authStack} />
     </Tab.Navigator>
   );
 };
@@ -21,7 +39,7 @@ const AuthTabNavigator = () => {
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="login"
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
@@ -31,8 +49,6 @@ const BottomTabNavigator = () => {
           //check if rout name is home
           if (RouteName === "Home") {
             iconName = focused ? "home" : "home-outline";
-          } else if (RouteName === "Api") {
-            iconName = focused ? "list" : "list-outline";
           } else if (RouteName === "Camera") {
             iconName = focused ? "camera" : "camera-outline";
           } else if (RouteName === "Profile") {

@@ -24,3 +24,6 @@ https://oblador.github.io/react-native-vector-icons/ {
     "react-navigation": "^4.4.4",
     "expo-camera": "~12.0.3"
   },
+
+This is a school project where i am trying to create a photo and chatt app kind of. 
+The application uses firebase/firebase auth and firestore for the data.

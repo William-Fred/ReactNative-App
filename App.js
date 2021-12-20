@@ -18,6 +18,7 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 //FIREBASE
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import "firebase/compat/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyBa9ky8NQefKv4J7fqly7_mOfGkc_gKSD8",
   authDomain: "imageappreact.firebaseapp.com",
@@ -32,7 +33,7 @@ if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
 function App() {
-  // Check if user is logged in
+  // Check if user is logged in through firebase auth method
   const [loaded, setLoaded] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {

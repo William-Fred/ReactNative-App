@@ -9,18 +9,61 @@ import {
   Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
-export default function savePhoto(props) {
-  // console.log(props.route.params.image);
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+require("firebase/firestore");
+// require("firebase/firebase-storage");
+export default function savePhoto(props, { navigation }) {
   const [isZoomed, setIsZoomed] = useState(false);
-
+  const [caption, setCaption] = useState("");
   //Toggle between full scale picture and small size picture when the user has taken a pciture from camera
   const toogleZoom = () => {
     console.log("toogle");
     setIsZoomed((previousState) => !previousState);
   };
 
-  const saveImage = async () => {};
+  const saveImage = async () => {
+    const uri = props.route.params.image;
+    const path = `post/${
+      firebase.auth().currentUser.uid
+    }/${Math.random().toString(10)}`;
+
+    console.log(path);
+
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const task = firebase.storage().ref().child(path).put(blob);
+    const taskProgress = (snapshot) => {
+      console.log(`transferred: ${snapshot.bytesTransferred}`);
+    };
+
+    const taskCompleted = () => {
+      task.snapshot.ref.getDownloadURL().then((snapshot) => {
+        savePost(snapshot);
+      });
+    };
+    const taskError = (snapshot) => {
+      console.log(snapshot);
+    };
+    task.on("state_changed", taskProgress, taskError, taskCompleted);
+  };
+
+  //Save post
+  const savePost = (downloadURL) => {
+    firebase
+      .firestore()
+      .collection("posts")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("userPosts")
+      .add({
+        downloadURL,
+        caption,
+        creation: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        props.navigation.popToTop();
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -39,6 +82,7 @@ export default function savePhoto(props) {
         </TouchableOpacity>
         <TextInput
           placeholder="Type in image text..."
+          onChangeText={(caption) => setCaption(caption)}
           style={styles.textInput}
         ></TextInput>
 

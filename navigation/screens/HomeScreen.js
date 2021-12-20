@@ -70,43 +70,6 @@ const mapDispatchProps = (dispatch) =>
   bindActionCreators({ fetchUser }, dispatch);
 export default connect(mapStateToProps, mapDispatchProps)(HomeScreen);
 
-// function HomeScreen({ navigation, route }) {
-//   const dispatch = useDispatch();
-//   useEffect(() => {
-//     bindActionCreators(fetchUser);
-//   });
-
-//   return (
-//     <ImageBackground
-//       source={require("./../../images/nature.jpg")}
-//       style={styles.background}
-//     >
-//       <View style={styles.container}>
-//         <View style={styles.topBar}>
-//           <Text style={styles.topBarText}>Photo and chat app!</Text>
-//           <View style={styles.iconPosition}>
-//             <Ionicons
-//               style={styles.topBarChatIcon}
-//               name="ios-chatbubbles-outline"
-//               onPress={() => navigation.navigate("ChatUsersScreen")}
-//             ></Ionicons>
-//           </View>
-//         </View>
-//         <View
-//           style={{
-//             paddingLeft: 120,
-//             justifyContent: "center",
-//             alignitems: "center",
-//           }}
-//         ></View>
-//       </View>
-//     </ImageBackground>
-//   );
-// }
-// const mapDispatchProps = (dispatch) =>
-//   bindActionCreators({ fetchUser }, dispatch);
-// export default connect(null, mapDispatchProps)(HomeScreen);
-
 const styles = StyleSheet.create({
   div: {
     backgroundColor: "#333",
