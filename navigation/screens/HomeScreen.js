@@ -15,17 +15,21 @@ import {
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 //Method fetchUser from redux-actions
-import { fetchUser } from "../../redux/actions/actions";
+import { fetchUser, fetchImagePosts } from "../../redux/actions/actions";
 
 export class HomeScreen extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
     this.props.fetchUser();
+    this.props.fetchImagePosts();
   }
-
   render() {
     const { currentUser } = this.props;
-    console.log(currentUser);
-    if (currentUser === undefined) {
+    console.log({ currentUser });
+
+    if (currentUser === null) {
       return (
         <View>
           <Text>..</Text>
@@ -44,7 +48,9 @@ export class HomeScreen extends Component {
               <Ionicons
                 style={styles.topBarChatIcon}
                 name="ios-chatbubbles-outline"
-                onPress={() => navigation.navigate("ChatUsersScreen")}
+                onPress={() => {
+                  this.props.navigation.navigate("ChatUsersScreen");
+                }}
               ></Ionicons>
             </View>
           </View>
@@ -62,12 +68,12 @@ export class HomeScreen extends Component {
     );
   }
 }
-
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
 });
 const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ fetchUser }, dispatch);
+  bindActionCreators({ fetchUser, fetchImagePosts }, dispatch);
+
 export default connect(mapStateToProps, mapDispatchProps)(HomeScreen);
 
 const styles = StyleSheet.create({

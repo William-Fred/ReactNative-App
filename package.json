@@ -10,7 +10,6 @@
     "@expo/vector-icons": "^12.0.5",
     "@firebase/storage": "^0.9.0",
     "@react-native-community/masked-view": "^0.1.11",
-    "@react-native-firebase/app": "^14.0.1",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
@@ -47,7 +46,8 @@
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
     "sharp": "^0.29.3",
-    "socket.io-client": "^4.3.2"
+    "socket.io-client": "^4.3.2",
+    "react-native-maps": "0.28.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

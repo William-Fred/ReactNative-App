@@ -21,7 +21,8 @@ export default function CameraScreen({ navigation }) {
   const [hasGalleryPermission, setGalleryPermission] = useState(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
+  const [pickedImage, setPickedImage] = useState([]);
   const [isZoomed, setIsZoomed] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState("");
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -50,25 +51,28 @@ export default function CameraScreen({ navigation }) {
       const photo = await camera.takePictureAsync(null);
       //console.log(photo)
       setImage(photo.uri);
-      console.log(photo.uri);
+      console.log(photo);
     }
   };
   //Pick images from media library
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      exif: true,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
     });
-    console.log(result);
+    // console.log(result.exif.GPSLatitude);
+    // console.log(result.exif.GPSLongitude);
 
     if (result.cancelled === false) {
-      setImage(result.uri);
-      console.log(result.uri);
+      setPickedImage(result);
+      console.log(result);
     }
   };
 
+  //convert
   const maniPulateImage = async () => {
     const manipResult = await manipulateAsync(image, [{ rotate: 0 }], {
       compress: 0.1,
@@ -125,7 +129,9 @@ export default function CameraScreen({ navigation }) {
               <Ionicons
                 style={styles.saveIcon}
                 name="checkmark-outline"
-                onPress={() => navigation.navigate("savePhoto", { image })}
+                onPress={() =>
+                  navigation.navigate("savePhoto", { pickedImage })
+                }
               ></Ionicons>
             </View>
           </View>
@@ -145,13 +151,13 @@ export default function CameraScreen({ navigation }) {
           </View>
 
           {/* Displaying image */}
-          {image && (
+          {pickedImage && (
             <TouchableOpacity
               onPress={toogleZoom}
               style={isZoomed ? styles.largeImage : styles.smallImage}
             >
               <Image
-                source={{ uri: image }}
+                source={{ uri: pickedImage.uri }}
                 style={isZoomed ? styles.largeImage : styles.smallImage}
               />
               {isZoomed && (

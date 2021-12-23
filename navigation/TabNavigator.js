@@ -7,6 +7,7 @@ import {
   HomeStackNavigator,
   ProfileStackNavigator,
   authStack,
+  MapStackNavigator,
 } from "./StackNavigator";
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +37,7 @@ const AuthTabNavigator = () => {
   );
 };
 //Bottom tabs
-const BottomTabNavigator = () => {
+const BottomTabNavigator = (props) => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -49,10 +50,12 @@ const BottomTabNavigator = () => {
           //check if rout name is home
           if (RouteName === "Home") {
             iconName = focused ? "home" : "home-outline";
-          } else if (RouteName === "Camera") {
+          } else if (RouteName === "Cameras") {
             iconName = focused ? "camera" : "camera-outline";
           } else if (RouteName === "Profile") {
             iconName = focused ? "person" : "person-outline";
+          } else if (RouteName === "Maps") {
+            iconName = focused ? "map" : "map-outline";
           }
           return (
             <Ionicons name={iconName} size={size} color={color}></Ionicons>
@@ -60,9 +63,18 @@ const BottomTabNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeStackNavigator} />
-      <Tab.Screen name="Camera" component={CameraStackNavigator} />
-      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+      <Tab.Screen
+        name="Home"
+        component={HomeStackNavigator}
+        options={{ tabBarStyle: { backgroundColor: "#333" } }}
+      />
+      <Tab.Screen name="Cameras" component={CameraStackNavigator} />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileStackNavigator}
+        navigation={props.naviagate}
+      ></Tab.Screen>
+      <Tab.Screen name="Maps" component={MapStackNavigator} />
     </Tab.Navigator>
   );
 };

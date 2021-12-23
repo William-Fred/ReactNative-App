@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     color: "#333",
+    width: "70%",
     fontSize: 15,
     margin: 20,
     height: 50,
@@ -128,8 +129,9 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     marginTop: 4,
-    fontSize: 14,
+    fontSize: 16,
     color: "#fff",
+    textAlign: "center",
   },
 });
 // const handleSubmit = () => {

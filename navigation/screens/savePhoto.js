@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,15 +7,30 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 require("firebase/firestore");
+require("firebase/firebase-firestore-compat");
 // require("firebase/firebase-storage");
 export default function savePhoto(props, { navigation }) {
+  // console.log(props.route.params.pickedImage.exif.GPSLatitude);
   const [isZoomed, setIsZoomed] = useState(false);
   const [caption, setCaption] = useState("");
+  const [longitude, setLongitude] = useState(
+    props.route.params.pickedImage.exif.GPSLongitude
+  );
+  const [latitude, setLatitude] = useState(
+    props.route.params.pickedImage.exif.GPSLatitude
+  );
+  // setLongitude(props.route.params.pickedImage.exif.GPSLongitude);
+  // setLatitude(props.route.params.pickedImage.exif.GPSLatitude);
+
+  console.log(longitude);
+  console.log(latitude);
+
   //Toggle between full scale picture and small size picture when the user has taken a pciture from camera
   const toogleZoom = () => {
     console.log("toogle");
@@ -23,10 +38,10 @@ export default function savePhoto(props, { navigation }) {
   };
 
   const saveImage = async () => {
-    const uri = props.route.params.image;
+    const uri = props.route.params.pickedImage.uri;
     const path = `post/${
       firebase.auth().currentUser.uid
-    }/${Math.random().toString(10)}`;
+    }/${Math.random().toString(36)}`;
 
     console.log(path);
 
@@ -50,6 +65,8 @@ export default function savePhoto(props, { navigation }) {
 
   //Save post
   const savePost = (downloadURL) => {
+    // const long = setLongitude(props.route.params.pickedImage.GPSLongitude);
+    // const lat = setLatitude(props.route.params.pickedImage.GPSLatitude);
     firebase
       .firestore()
       .collection("posts")
@@ -59,9 +76,14 @@ export default function savePhoto(props, { navigation }) {
         downloadURL,
         caption,
         creation: firebase.firestore.FieldValue.serverTimestamp(),
+        GPSLongitude: longitude,
+        GPSLatitude: latitude,
       })
       .then(() => {
-        props.navigation.popToTop();
+        props.navigation.navigate("HomeScreen");
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -73,7 +95,7 @@ export default function savePhoto(props, { navigation }) {
           style={isZoomed ? styles.largeImage : styles.smallImage}
         >
           <Image
-            source={{ uri: props.route.params.image }}
+            source={{ uri: props.route.params.pickedImage.uri }}
             style={isZoomed ? styles.largeImage : styles.smallImage}
           />
           {isZoomed && (
@@ -85,10 +107,19 @@ export default function savePhoto(props, { navigation }) {
           onChangeText={(caption) => setCaption(caption)}
           style={styles.textInput}
         ></TextInput>
-
-        <View>
-          <Button title="Save image" onPress={saveImage}></Button>
-        </View>
+      </View>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          margin: 100,
+        }}
+      >
+        <Button
+          style={{ marginTop: 200, marginLeft: 200 }}
+          title="Save image"
+          onPress={saveImage}
+        ></Button>
       </View>
     </View>
   );

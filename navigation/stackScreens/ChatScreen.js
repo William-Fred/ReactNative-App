@@ -6,24 +6,24 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  FlatList,
 } from "react-native";
 import { Constants } from "expo";
 import io from "socket.io-client/dist/socket.io";
-
-const SOCKET_URL = "http://192.168.0.4:3000";
-// const {user}  = route.params;
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+const SOCKET_URL = "http://193.10.195.200:3000";
 
 export default class ChatScreen extends Component {
   constructor(props) {
     super(props);
-
+    console.log(this.props.route);
     this.state = {
-      user: this.props.route.params.users,
+      reciever: this.props.route.params,
       connected: false,
       chatMessage: "",
       chatMessages: [],
     };
-    console.log(this.state.user);
   }
 
   //Connecting socket with local ip
@@ -45,39 +45,27 @@ export default class ChatScreen extends Component {
   //Creating an event for chat messages and
   componentDidMount() {
     this.connectSocket();
-
     this.socket.on("chat message", (message) => {
       this.setState({ chatMessages: [...this.state.chatMessages, message] });
     });
-
     console.log(this.state);
   }
 
-  // onConnectSocket = () => {
-  //   if(this.socket) {
-  //     this.socket.on('connect', () => {
-  //       this.socket.emit('i-am-connected');
-  //       this.setState({
-  //         connected: true
-  //       });
-  //     });
-  //   }
-  // }
-
   render() {
     const keyboardVerticalOffset =
-      Platform.OS === "ios" ? 60 : 0 && Platform.OS === "web";
+      Platform.OS === "ios" ? 90 : 0 && Platform.OS === "web";
     const chatMessages = this.state.chatMessages.map((chatMessage) => (
       <Text key={chatMessage}>{chatMessage}</Text>
     ));
+
     return (
       <KeyboardAvoidingView
         style={styles.container}
         behavior="height"
         keyboardVerticalOffset={keyboardVerticalOffset}
       >
+        {/* <Text>Chatting with {this.state.reciever.users.Name}</Text> */}
         {chatMessages}
-
         <TextInput
           autoCorrect={false}
           style={styles.textInput}
@@ -99,6 +87,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ecf0f1",
+  },
+  ChatText: {
+    borderColor: "#fff",
+    borderWidth: 3,
+    borderRadius: 50,
   },
   textInput: {
     position: "absolute",

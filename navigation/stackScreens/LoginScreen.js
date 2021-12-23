@@ -55,10 +55,11 @@ export default function LoginScreen({ navigation }) {
             <TextInput
               style={styles.textInput}
               placeholder="Password.."
+              secureTextEntry={true}
               onChangeText={(Password) => setPassword(Password)}
             ></TextInput>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.loginButton}>
+              <TouchableOpacity style={styles.loginButton} onPress={signIn}>
                 <Text style={styles.loginText}>Logg in</Text>
               </TouchableOpacity>
             </View>
@@ -122,12 +123,14 @@ const styles = StyleSheet.create({
   },
   textInput: {
     color: "#333",
+    width: "70%",
     fontSize: 18,
     margin: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#fff",
   },
   topSection: {
+    marginTop: 50,
     backgroundColor: "transparent",
     alignItems: "center",
     flex: 0.2,
@@ -139,7 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     borderWidth: 2,
     borderColor: "rgba(255,255,255, 0.2)",
-    borderBottomColor: "rgba(255,255,255, 0.2)",
+    // borderBottomColor: "rgba(255,255,255, 0.2)",
     shadowColor: "rgba(121, 125, 129, 1) ",
     shadowOffset: { width: 2, height: 2 },
   },

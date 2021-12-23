@@ -7,42 +7,19 @@ import {
   Image,
   Modal,
   Pressable,
+  FlatList,
 } from "react-native";
-
-export default function ProfilePage({ navigation }) {
+import { connect } from "react-redux";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+function ProfilePage(props, { navigation }) {
+  const { currentUser, posts } = props;
+  // console.log({ currentUser, posts });
   const [modalVisible, setModalVisible] = useState(false);
-  const [showImage, setShowImage] = useState([]);
-
-  // const showImages = () => {
-  //   fetch("http://192.168.0.4:5000/api/Image", {
-  //     method: "Get",
-  //     headers: {
-  //       //Header Defination
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json; charset=utf-8",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((responseJson) => {
-  //       console.log(responseJson);
-  //       setShowImage(responseJson[4]);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-  // console.log(showImage);
-  // useEffect(() => {
-  //   showImages();
-  // }, []);
-
-  // const reader = new FileReader();
-  // reader.readAsDataURL(showImage.imageFile);
-  // reader.onloadend = function () {
-  //   const base64data = reader.result;
-  //   console.log(base64data);
-  // };
-
+  // // useEffect(() => {
+  //   props.posts.id;
+  // }, [props]);
   return (
     <View style={styles.container}>
       <Modal
@@ -68,7 +45,7 @@ export default function ProfilePage({ navigation }) {
         </View>
       </Modal>
       {/* <View> */}
-      <View style={styles.section_top_image}>
+      <View>
         <View>
           <Pressable onPress={() => setModalVisible(true)}>
             <Image
@@ -78,44 +55,43 @@ export default function ProfilePage({ navigation }) {
           </Pressable>
         </View>
       </View>
-
-      <View style={styles.section_top_info_container}>
-        <View style={styles.section_top_info_one}>
-          <View style={styles.section_top_info_two}>
-            <Text style={styles.infoText}>Posts</Text>
-            <Text>12</Text>
-          </View>
-          <View style={styles.section_top_info_two}>
-            <Text style={styles.infoText}>Followers</Text>
-            <Text>200</Text>
-          </View>
-          <View style={styles.section_top_info_two}>
-            <Text style={styles.infoText}>Following</Text>
-            <Text>200</Text>
-          </View>
-        </View>
-      </View>
-      <View>
-        {/* <Text>{data + showImage.imageFile}</Text> */}
-        <Image
-          style={{ width: 200, height: 100 }}
-          source={{ uri: showImage.imageFile }}
-        ></Image>
+      <View style={styles.mainFeed}>
+        <Text>{currentUser.Name}</Text>
+        <Text>{currentUser.Email}</Text>
+        <FlatList
+          numColumns={5}
+          horizontal={false}
+          data={posts}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => props.navigation.navigate("Maps")}>
+              <Image
+                style={{ height: 100, width: 100, aspectRatio: 1 / 1 }}
+                source={{ uri: item.downloadURL }}
+              />
+            </TouchableOpacity>
+          )}
+        ></FlatList>
       </View>
     </View>
     // </View>
   );
 }
+
+const mapStateToProps = (store) => ({
+  currentUser: store.userState.currentUser,
+  posts: store.userState.posts,
+});
+
+export default connect(mapStateToProps, null)(ProfilePage);
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
   },
   section_top_image: {
-    height: "20%",
-    width: "35%",
+    width: "100%",
     backgroundColor: "transparent",
     borderBottomWidth: 1,
     borderBottomColor: "black",
@@ -188,5 +164,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     color: "rgba(8,83,151, 0.8)",
     marginTop: 10,
+  },
+  mainFeed: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

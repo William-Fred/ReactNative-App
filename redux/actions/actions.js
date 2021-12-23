@@ -1,4 +1,7 @@
-import { USER_STATE_CHANGED } from "../constants/constants";
+import {
+  USER_STATE_CHANGED,
+  USER_POSTS_STATE_CHANGED,
+} from "../constants/constants";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -17,6 +20,30 @@ export function fetchUser() {
         } else {
           console.log("not exists");
         }
+      });
+  };
+}
+
+export function fetchImagePosts() {
+  return (dispatch) => {
+    firebase
+      .firestore()
+      .collection("posts")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("userPosts")
+      .orderBy("creation", "asc")
+      .get()
+      .then((snapshot) => {
+        let posts = snapshot.docs.map((images) => {
+          const data = images.data();
+          const id = images.id;
+          return { id, ...data };
+        });
+        console.log(posts);
+        dispatch({
+          type: USER_POSTS_STATE_CHANGED,
+          posts,
+        });
       });
   };
 }

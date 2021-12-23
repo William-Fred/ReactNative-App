@@ -9,6 +9,7 @@ import ProfilePage from "./screens/ProfilePage";
 import LoginScreen from "./stackScreens/LoginScreen";
 import SignupScreen from "./stackScreens/SignupScreen";
 import ChatUsersScreen from "./stackScreens/ChatUsersScreen";
+import MapScreen from "./screens/Map";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
@@ -33,6 +34,15 @@ const ProfileStackNavigator = () => {
   );
 };
 
+//Map stack
+const MapStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Map" component={MapScreen} />
+    </Stack.Navigator>
+  );
+};
+//login and signup
 const authStack = () => {
   return (
     <Stack.Navigator>
@@ -49,7 +59,11 @@ const authStack = () => {
 const HomeStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{ headerStyle: { backgroundColor: "#333" } }}
+      />
       <Stack.Screen name="ChatUsersScreen" component={ChatUsersScreen} />
       <Stack.Screen name="Chat" component={ChatScreen} />
     </Stack.Navigator>
@@ -60,4 +74,5 @@ export {
   HomeStackNavigator,
   ProfileStackNavigator,
   authStack,
+  MapStackNavigator,
 };

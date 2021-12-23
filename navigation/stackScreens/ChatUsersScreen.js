@@ -1,42 +1,64 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-
-export default function ChatUsersScreen({ navigation }) {
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Button,
+  StyleSheet,
+} from "react-native";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+export default function ChatUsersScreen({ navigation }, props) {
   const [users, setUsers] = useState([]);
-  const getUsers = () => {
-    fetch("http://192.168.0.4:5000/api/User", {
-      method: "GET",
-      headers: {
-        //Header Defination
-        Accept: "application/json",
-        "Content-Type": "application/json; charset=utf-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        setUsers(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+
   useEffect(() => {
-    getUsers();
+    let allUsers = [];
+    firebase
+      .firestore()
+      .collection("users")
+      .get()
+      .then((querySnapshot) => {
+        console.log("total users: ", querySnapshot.size);
+        querySnapshot.forEach((documentSnapshot) => {
+          // console.log(documentSnapshot.data());
+          allUsers.push(documentSnapshot.data());
+        });
+        setUsers(allUsers);
+      });
   }, []);
+  console.log(users);
+
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
+        horizontal={true}
+        row={3}
         data={users}
-        keyExtractor={({ Id }, index) => Id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("Chat", { users: item })}
+            onPress={() => {
+              navigation.navigate("Chat", { users: item });
+            }}
           >
-            <Text>{item.Username}</Text>
+            <Text style={styles.user}>{item.Name}</Text>
           </TouchableOpacity>
         )}
       ></FlatList>
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#333",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  list: {
+    margin: 10,
+  },
+  user: {
+    color: "#fff",
+  },
+});
