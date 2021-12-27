@@ -49,9 +49,9 @@ export default function CameraScreen({ navigation }) {
   const takePicture = async () => {
     if (camera) {
       const photo = await camera.takePictureAsync(null);
-      //console.log(photo)
       setImage(photo.uri);
       console.log(photo);
+      setPickedImage([]);
     }
   };
   //Pick images from media library
@@ -61,7 +61,7 @@ export default function CameraScreen({ navigation }) {
       exif: true,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1,
+      quality: 0.1,
     });
     // console.log(result.exif.GPSLatitude);
     // console.log(result.exif.GPSLongitude);
@@ -130,7 +130,7 @@ export default function CameraScreen({ navigation }) {
                 style={styles.saveIcon}
                 name="checkmark-outline"
                 onPress={() =>
-                  navigation.navigate("savePhoto", { pickedImage })
+                  navigation.navigate("savePhoto", { pickedImage, image })
                 }
               ></Ionicons>
             </View>
@@ -151,22 +151,39 @@ export default function CameraScreen({ navigation }) {
           </View>
 
           {/* Displaying image */}
-          {pickedImage && (
-            <TouchableOpacity
-              onPress={toogleZoom}
-              style={isZoomed ? styles.largeImage : styles.smallImage}
-            >
-              <Image
-                source={{ uri: pickedImage.uri }}
+          <View
+            style={{
+              flex: 0.3,
+              height: "10%",
+              width: "50%",
+              marginLeft: 20,
+            }}
+          >
+            {pickedImage && (
+              <TouchableOpacity
+                onPress={toogleZoom}
                 style={isZoomed ? styles.largeImage : styles.smallImage}
-              />
-              {isZoomed && (
-                <Text style={{ position: "absolute", left: "50%", top: "50%" }}>
-                  Go back
-                </Text>
-              )}
-            </TouchableOpacity>
-          )}
+              >
+                <Image
+                  source={{ uri: pickedImage.uri }}
+                  style={isZoomed ? styles.largeImage : styles.smallImage}
+                />
+                {isZoomed}
+              </TouchableOpacity>
+            )}
+            {image && (
+              <TouchableOpacity
+                onPress={toogleZoom}
+                style={isZoomed ? styles.largeImage : styles.smallImage}
+              >
+                <Image
+                  source={{ uri: image.uri }}
+                  style={isZoomed ? styles.largeImage : styles.smallImage}
+                />
+                {isZoomed}
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       </Camera>
     </View>
@@ -209,8 +226,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   smallImage: {
-    height: "50%",
-    width: "50%",
+    height: "70%",
+    width: "70%",
+    borderRadius: 100,
   },
   largeImage: {
     height: "100%",

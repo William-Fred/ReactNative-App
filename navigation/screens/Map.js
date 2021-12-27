@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-import { FlatList } from "react-native-gesture-handler";
 function Map(props) {
   const posts = props.posts;
   console.log(posts);
@@ -13,15 +12,10 @@ function Map(props) {
     console.log(post.GPSLatitude);
     console.log(post.GPSLongitude);
   });
-  // console.log(posts[9].GPSLatitude);
-  // console.log(posts[9].GPSLongitude);
 
   return (
     <View style={styles.container}>
       <View>
-        {/* <FlatList
-          data={posts}
-          renderItem={({ item }) => ( */}
         <MapView
           style={styles.map}
           initialRegion={{
@@ -49,30 +43,6 @@ function Map(props) {
               </Marker>
             );
           })}
-          {/* <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: item.GPSLatitude,
-                longitude: item.GPSLongitude,
-                latitudeDelta: 0,
-                longitudeDelta: 0,
-              }}
-            >
-              <Marker
-                coordinate={{
-                  latitude: item.GPSLatitude,
-                  longitude: item.GPSLongitude,
-                }}
-                title="majorna"
-              >
-                <Image
-                  style={{ width: 50, height: 50, borderRadius: 100 }}
-                  source={{ uri: item.downloadURL }}
-                ></Image>
-              </Marker>
-            </MapView> */}
-          {/* )}
-        ></FlatList> */}
         </MapView>
       </View>
     </View>

@@ -37,34 +37,34 @@ export class HomeScreen extends Component {
       );
     }
     return (
-      <ImageBackground
-        source={require("./../../images/nature.jpg")}
-        style={styles.background}
-      >
-        <View style={styles.container}>
-          <View style={styles.topBar}>
-            <Text style={styles.topBarText}>Photo and chat app!</Text>
-            <View style={styles.iconPosition}>
-              <Ionicons
-                style={styles.topBarChatIcon}
-                name="ios-chatbubbles-outline"
-                onPress={() => {
-                  this.props.navigation.navigate("ChatUsersScreen");
-                }}
-              ></Ionicons>
-            </View>
-          </View>
-          <View
-            style={{
-              paddingLeft: 120,
-              justifyContent: "center",
-              alignitems: "center",
-            }}
-          >
-            <Text>{currentUser.Name} is logged in</Text>
+      // <ImageBackground
+      //   source={require("./../../images/nature.jpg")}
+      //   style={styles.background}
+      // >
+      <View style={styles.container}>
+        <View style={styles.topBar}>
+          <Text style={styles.topBarText}>Photo and chat app!</Text>
+          <View style={styles.iconPosition}>
+            <Ionicons
+              style={styles.topBarChatIcon}
+              name="ios-chatbubbles-outline"
+              onPress={() => {
+                this.props.navigation.navigate("ChatUsersScreen");
+              }}
+            ></Ionicons>
           </View>
         </View>
-      </ImageBackground>
+        <View
+          style={{
+            paddingLeft: 120,
+            justifyContent: "center",
+            alignitems: "center",
+          }}
+        >
+          <Text>{currentUser.Name} is logged in</Text>
+        </View>
+      </View>
+      // </ImageBackground>
     );
   }
 }

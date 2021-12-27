@@ -15,11 +15,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 function ProfilePage(props, { navigation }) {
   const { currentUser, posts } = props;
-  // console.log({ currentUser, posts });
   const [modalVisible, setModalVisible] = useState(false);
-  // // useEffect(() => {
-  //   props.posts.id;
-  // }, [props]);
   return (
     <View style={styles.container}>
       <Modal
@@ -53,19 +49,19 @@ function ProfilePage(props, { navigation }) {
               source={require("./../../images/nature.jpg")}
             ></Image>
           </Pressable>
+          <Text>{currentUser.Name}</Text>
+          <Text>{currentUser.Email}</Text>
         </View>
       </View>
       <View style={styles.mainFeed}>
-        <Text>{currentUser.Name}</Text>
-        <Text>{currentUser.Email}</Text>
         <FlatList
-          numColumns={5}
+          numColumns={3}
           horizontal={false}
           data={posts}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => props.navigation.navigate("Maps")}>
               <Image
-                style={{ height: 100, width: 100, aspectRatio: 1 / 1 }}
+                style={styles.feedImage}
                 source={{ uri: item.downloadURL }}
               />
             </TouchableOpacity>
@@ -86,7 +82,8 @@ export default connect(mapStateToProps, null)(ProfilePage);
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
+    flex: 1,
+    // position: "absolute",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -127,6 +124,12 @@ const styles = StyleSheet.create({
   textUnder: {
     marginLeft: 15,
   },
+  feedImage: {
+    height: 120,
+    width: 120,
+    aspectRatio: 1 / 1,
+    margin: 5,
+  },
   image: {
     width: 100,
     height: 100,
@@ -166,6 +169,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   mainFeed: {
+    marginTop: 50,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },

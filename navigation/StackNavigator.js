@@ -20,8 +20,16 @@ const Stack = createStackNavigator();
 const CameraStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Camera" component={CameraScreen} />
-      <Stack.Screen name="savePhoto" component={savePhoto} />
+      <Stack.Screen
+        name="Camera"
+        component={CameraScreen}
+        options={{ headerStyle: { backgroundColor: "#333" } }}
+      />
+      <Stack.Screen
+        name="savePhoto"
+        component={savePhoto}
+        options={{ headerStyle: { backgroundColor: "#333" } }}
+      />
     </Stack.Navigator>
   );
 };
@@ -29,7 +37,11 @@ const CameraStackNavigator = () => {
 const ProfileStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ProfilePage" component={ProfilePage} />
+      <Stack.Screen
+        name="ProfilePage"
+        component={ProfilePage}
+        options={{ headerStyle: { backgroundColor: "#333" } }}
+      />
     </Stack.Navigator>
   );
 };

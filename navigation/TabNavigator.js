@@ -32,7 +32,11 @@ const AuthTabNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Auth" component={authStack} />
+      <Tab.Screen
+        name="Auth"
+        component={authStack}
+        options={{ tabBarStyle: { backgroundColor: "#333" } }}
+      />
     </Tab.Navigator>
   );
 };
@@ -43,11 +47,15 @@ const BottomTabNavigator = (props) => {
       initialRouteName="Home"
       screenOptions={({ route }) => ({
         headerShown: false,
+        labelStyle: {
+          fontSize: 15,
+        },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let RouteName = route.name;
 
           //check if rout name is home
+          color = "#fff";
           if (RouteName === "Home") {
             iconName = focused ? "home" : "home-outline";
           } else if (RouteName === "Cameras") {
@@ -68,13 +76,27 @@ const BottomTabNavigator = (props) => {
         component={HomeStackNavigator}
         options={{ tabBarStyle: { backgroundColor: "#333" } }}
       />
-      <Tab.Screen name="Cameras" component={CameraStackNavigator} />
+      <Tab.Screen
+        name="Cameras"
+        component={CameraStackNavigator}
+        options={{ tabBarStyle: { backgroundColor: "#333" } }}
+      />
       <Tab.Screen
         name="Profile"
         component={ProfileStackNavigator}
         navigation={props.naviagate}
+        options={{
+          title: "Profile",
+          headerTintColor: "white",
+          headerTitleAlign: "center",
+          tabBarStyle: { backgroundColor: "#333", borderTopWidth: 0 },
+        }}
       ></Tab.Screen>
-      <Tab.Screen name="Maps" component={MapStackNavigator} />
+      <Tab.Screen
+        name="Maps"
+        component={MapStackNavigator}
+        options={{ tabBarStyle: { backgroundColor: "#333" } }}
+      />
     </Tab.Navigator>
   );
 };
