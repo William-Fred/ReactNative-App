@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { useState, useEffect } from "react";
-import { render } from "react-dom";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   View,
@@ -10,7 +8,11 @@ import {
   ScrollContainer,
   ImageBackground,
   Image,
+  FlatList,
+  ScrollView,
 } from "react-native";
+//Import sign out button
+import ImageFeed from "../../components/ImageFeed";
 //imports for redux
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -21,55 +23,40 @@ export class HomeScreen extends Component {
   constructor(props) {
     super(props);
   }
+
   componentDidMount() {
     this.props.fetchUser();
     this.props.fetchImagePosts();
   }
+
   render() {
     const { currentUser } = this.props;
     console.log({ currentUser });
-
     if (currentUser === null) {
       return (
         <View>
-          <Text>..</Text>
+          <Text>..User is null</Text>
         </View>
       );
     }
     return (
-      // <ImageBackground
-      //   source={require("./../../images/nature.jpg")}
-      //   style={styles.background}
-      // >
       <View style={styles.container}>
-        <View style={styles.topBar}>
-          <Text style={styles.topBarText}>Photo and chat app!</Text>
-          <View style={styles.iconPosition}>
-            <Ionicons
-              style={styles.topBarChatIcon}
-              name="ios-chatbubbles-outline"
-              onPress={() => {
-                this.props.navigation.navigate("ChatUsersScreen");
-              }}
-            ></Ionicons>
-          </View>
-        </View>
         <View
           style={{
-            paddingLeft: 120,
             justifyContent: "center",
-            alignitems: "center",
+            alignItems: "center",
           }}
         >
           <Text>{currentUser.Name} is logged in</Text>
         </View>
+        <ImageFeed style={{ marginTop: 100 }} />
       </View>
-      // </ImageBackground>
     );
   }
 }
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
+  posts: store.userState.posts,
 });
 const mapDispatchProps = (dispatch) =>
   bindActionCreators({ fetchUser, fetchImagePosts }, dispatch);
@@ -77,45 +64,11 @@ const mapDispatchProps = (dispatch) =>
 export default connect(mapStateToProps, mapDispatchProps)(HomeScreen);
 
 const styles = StyleSheet.create({
-  div: {
-    backgroundColor: "#333",
-    paddingTop: 50,
-  },
-  background: {
-    width: "100%",
-    height: "100%",
-  },
   container: {
     flex: 1,
+    backgroundColor: "#214F4B",
   },
-  topBar: {
-    height: "10%",
-    backgroundColor: "black",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  topBarText: {
-    color: "white",
-    fontSize: 18,
-    fontFamily: "Arial",
-    fontStyle: "italic",
-    marginLeft: 105,
-  },
-  iconPosition: {
-    borderColor: "white",
-    borderWidth: 1,
-    borderRadius: 15,
-    width: 35,
-    height: 35,
-    marginLeft: 50,
-  },
-  topBarChatIcon: {
-    color: "white",
-    flexDirection: "row",
-    borderColor: "white",
-    fontSize: 20,
-    marginLeft: 7,
-    marginTop: 5,
-  },
+  // userText: {
+  //   color: "transparant",
+  // },
 });

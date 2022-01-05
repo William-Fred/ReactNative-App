@@ -12,7 +12,7 @@ import { Constants } from "expo";
 import io from "socket.io-client/dist/socket.io";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
-const SOCKET_URL = "http://193.10.195.200:3000";
+const SOCKET_URL = "http://192.168.0.4:3000";
 
 export default class ChatScreen extends Component {
   constructor(props) {
@@ -42,7 +42,7 @@ export default class ChatScreen extends Component {
     console.log(this.state);
   }
 
-  //Creating an event for chat messages and
+  //Creating an event for chat messages with socket.on
   componentDidMount() {
     this.connectSocket();
     this.socket.on("chat message", (message) => {
@@ -54,6 +54,12 @@ export default class ChatScreen extends Component {
   render() {
     const keyboardVerticalOffset =
       Platform.OS === "ios" ? 90 : 0 && Platform.OS === "web";
+    const behavior =
+      Platform.OS === "ios"
+        ? "height"
+        : "height" && Platform.OS === "android"
+        ? "padding"
+        : "padding";
     const chatMessages = this.state.chatMessages.map((chatMessage) => (
       <Text key={chatMessage}>{chatMessage}</Text>
     ));
@@ -61,10 +67,10 @@ export default class ChatScreen extends Component {
     return (
       <KeyboardAvoidingView
         style={styles.container}
-        behavior="height"
+        enabled={true}
+        behavior={behavior}
         keyboardVerticalOffset={keyboardVerticalOffset}
       >
-        {/* <Text>Chatting with {this.state.reciever.users.Name}</Text> */}
         {chatMessages}
         <TextInput
           autoCorrect={false}

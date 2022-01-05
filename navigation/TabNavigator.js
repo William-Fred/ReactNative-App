@@ -18,12 +18,12 @@ const AuthTabNavigator = () => {
       barStyle={{ backgroundColor: "white" }}
       screenOptions={({ route }) => ({
         headerShown: false,
-
+        tabBarActiveTintColor: "#fff",
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let RouteName = route.name;
           color = "#334E58";
-          if (RouteName === "Auth") {
+          if (RouteName === "Logg in") {
             iconName = focused ? "person" : "person-outline";
           }
           return (
@@ -33,9 +33,9 @@ const AuthTabNavigator = () => {
       })}
     >
       <Tab.Screen
-        name="Auth"
+        name="Logg in"
         component={authStack}
-        options={{ tabBarStyle: { backgroundColor: "#333" } }}
+        options={{ tabBarStyle: { backgroundColor: "#333", display: "none" } }}
       />
     </Tab.Navigator>
   );
@@ -47,6 +47,8 @@ const BottomTabNavigator = (props) => {
       initialRouteName="Home"
       screenOptions={({ route }) => ({
         headerShown: false,
+        tabBarActiveTintColor: "#FCAF58",
+        tabBarInactiveTintColor: "#fff",
         labelStyle: {
           fontSize: 15,
         },
@@ -74,12 +76,16 @@ const BottomTabNavigator = (props) => {
       <Tab.Screen
         name="Home"
         component={HomeStackNavigator}
-        options={{ tabBarStyle: { backgroundColor: "#333" } }}
+        options={{ tabBarStyle: { backgroundColor: "#214F4B" } }}
       />
       <Tab.Screen
         name="Cameras"
         component={CameraStackNavigator}
-        options={{ tabBarStyle: { backgroundColor: "#333" } }}
+        options={{
+          tabBarStyle: {
+            backgroundColor: "#214F4B",
+          },
+        }}
       />
       <Tab.Screen
         name="Profile"
@@ -87,15 +93,13 @@ const BottomTabNavigator = (props) => {
         navigation={props.naviagate}
         options={{
           title: "Profile",
-          headerTintColor: "white",
-          headerTitleAlign: "center",
-          tabBarStyle: { backgroundColor: "#333", borderTopWidth: 0 },
+          tabBarStyle: { backgroundColor: "#214F4B", borderTopWidth: 0 },
         }}
       ></Tab.Screen>
       <Tab.Screen
         name="Maps"
         component={MapStackNavigator}
-        options={{ tabBarStyle: { backgroundColor: "#333" } }}
+        options={{ tabBarStyle: { backgroundColor: "#214F4B" } }}
       />
     </Tab.Navigator>
   );

@@ -18,7 +18,7 @@ export const user = (state = initialState, action) => {
     case USER_POSTS_STATE_CHANGED:
       return {
         ...state,
-        posts: action.posts,
+        posts: action.posts.slice(),
       };
     default:
       return state;

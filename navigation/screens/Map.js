@@ -1,21 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
-import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Image,
+  Button,
+} from "react-native";
 import { connect } from "react-redux";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 function Map(props) {
   const posts = props.posts;
-  console.log(posts);
-  posts.forEach((post) => {
-    console.log(post.GPSLatitude);
-    console.log(post.GPSLongitude);
-  });
+  // console.log(posts);
+  // const [posts, setPosts] = useState(props.posts);
+  const [updatedPost, setUpdatedPosts] = useState([]);
 
+  useEffect(() => {
+    console.log(posts);
+  }, []);
+  const fetchImages = () => {
+    posts.forEach((post) => {
+      console.log(post);
+      setUpdatedPosts(post);
+    });
+  };
+  console.log(updatedPost);
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.list}>
+        <Button title="Get latest" onPress={fetchImages}></Button>
+
         <MapView
           style={styles.map}
           initialRegion={{
@@ -65,6 +82,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
   },
   list: {
-    height: "50%",
+    height: "100%",
   },
 });

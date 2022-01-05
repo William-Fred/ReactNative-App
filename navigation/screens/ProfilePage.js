@@ -8,7 +8,9 @@ import {
   Modal,
   Pressable,
   FlatList,
+  Button,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
@@ -16,6 +18,28 @@ import "firebase/compat/firestore";
 function ProfilePage(props, { navigation }) {
   const { currentUser, posts } = props;
   const [modalVisible, setModalVisible] = useState(false);
+  const [userPosts, setUserPosts] = useState([]);
+  useEffect(() => {
+    getUserPosts();
+  }, []);
+  const getUserPosts = () => {
+    firebase
+      .firestore()
+      .collection("posts")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("userPosts")
+      .orderBy("creation", "asc")
+      .get()
+      .then((snapshot) => {
+        let posts = snapshot.docs.map((images) => {
+          const data = images.data();
+          const id = images.id;
+          return { id, ...data };
+        });
+        setUserPosts(posts);
+      });
+  };
+  console.log(userPosts);
   return (
     <View style={styles.container}>
       <Modal
@@ -41,23 +65,26 @@ function ProfilePage(props, { navigation }) {
         </View>
       </Modal>
       {/* <View> */}
-      <View>
-        <View>
+      <View style={styles.first}>
+        <LinearGradient colors={["#214F4B", "#8B9D83"]} style={styles.linear}>
           <Pressable onPress={() => setModalVisible(true)}>
             <Image
               style={styles.image}
               source={require("./../../images/nature.jpg")}
             ></Image>
           </Pressable>
-          <Text>{currentUser.Name}</Text>
-          <Text>{currentUser.Email}</Text>
-        </View>
+          <Text style={styles.userText}>{currentUser.Name}</Text>
+          <Text style={styles.userText}>{currentUser.Email}</Text>
+          <Pressable style={styles.button} onPress={getUserPosts}>
+            <Text style={styles.buttonText}>Get latest images</Text>
+          </Pressable>
+        </LinearGradient>
       </View>
       <View style={styles.mainFeed}>
         <FlatList
           numColumns={3}
           horizontal={false}
-          data={posts}
+          data={userPosts}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => props.navigation.navigate("Maps")}>
               <Image
@@ -86,6 +113,19 @@ const styles = StyleSheet.create({
     // position: "absolute",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#214F4B",
+  },
+  first: {
+    marginTop: 40,
+    width: "100%",
+    backgroundColor: "#214F4B",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  linear: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
   },
   section_top_image: {
     width: "100%",
@@ -113,22 +153,14 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
   },
-  infoText: {
-    color: "black",
-    marginLeft: 11,
-    fontSize: 17,
-    fontWeight: "bold",
-    textDecorationLine: "underline",
-    marginTop: 5,
-  },
-  textUnder: {
-    marginLeft: 15,
-  },
+
   feedImage: {
     height: 120,
     width: 120,
     aspectRatio: 1 / 1,
     margin: 5,
+    borderWidth: 1,
+    borderColor: "#fff",
   },
   image: {
     width: 100,
@@ -138,7 +170,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "white",
     marginTop: 5,
-    marginLeft: 10,
+    marginBottom: 10,
   },
   modalView: {
     margin: 20,
@@ -169,9 +201,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   mainFeed: {
-    marginTop: 50,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#8B9D83",
+  },
+  button: {
+    marginTop: 10,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: "#fff",
+    borderRadius: 20,
+    backgroundColor: "#214F4B",
+    opacity: 0.6,
+  },
+  buttonText: {
+    margin: 3,
+    fontSize: 18,
+    color: "#fff",
+  },
+  userText: {
+    color: "#fff",
   },
 });

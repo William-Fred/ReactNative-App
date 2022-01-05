@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { View, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "./screens/HomeScreen";
@@ -10,6 +11,8 @@ import LoginScreen from "./stackScreens/LoginScreen";
 import SignupScreen from "./stackScreens/SignupScreen";
 import ChatUsersScreen from "./stackScreens/ChatUsersScreen";
 import MapScreen from "./screens/Map";
+import LogOut from "../components/LogOut";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
@@ -23,12 +26,12 @@ const CameraStackNavigator = () => {
       <Stack.Screen
         name="Camera"
         component={CameraScreen}
-        options={{ headerStyle: { backgroundColor: "#333" } }}
+        options={{ headerStyle: { backgroundColor: "#214F4B" } }}
       />
       <Stack.Screen
         name="savePhoto"
         component={savePhoto}
-        options={{ headerStyle: { backgroundColor: "#333" } }}
+        options={{ headerStyle: { backgroundColor: "#214F4B" } }}
       />
     </Stack.Navigator>
   );
@@ -40,7 +43,10 @@ const ProfileStackNavigator = () => {
       <Stack.Screen
         name="ProfilePage"
         component={ProfilePage}
-        options={{ headerStyle: { backgroundColor: "#333" } }}
+        options={{
+          headerShown: false,
+          headerStyle: { backgroundColor: "#214F4B" },
+        }}
       />
     </Stack.Navigator>
   );
@@ -50,7 +56,13 @@ const ProfileStackNavigator = () => {
 const MapStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Map" component={MapScreen} />
+      <Stack.Screen
+        name="Map"
+        component={MapScreen}
+        options={{
+          headerStyle: { backgroundColor: "#214F4B" },
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -63,18 +75,46 @@ const authStack = () => {
         component={LoginScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{
+          title: "",
+          headerStyle: {
+            backgroundColor: "#214F4B",
+            borderBottomWidth: "0",
+            borderColor: "#333",
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };
 //Stack for Home views
-const HomeStackNavigator = () => {
+const HomeStackNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={{ headerStyle: { backgroundColor: "#333" } }}
+        options={{
+          title: "PicCon",
+          headerTintColor: "#fff",
+          headerTitleAlign: "center",
+          headerStyle: { backgroundColor: "#214F4B" },
+          headerLeft: () => <LogOut />,
+          headerRight: () => (
+            <View style={styles.iconPosition}>
+              <Ionicons
+                name="ios-chatbubbles-outline"
+                style={styles.topBarChatIcon}
+                onPress={() => {
+                  navigation.navigate("Chat");
+                }}
+              />
+            </View>
+          ),
+        }}
       />
       <Stack.Screen name="ChatUsersScreen" component={ChatUsersScreen} />
       <Stack.Screen name="Chat" component={ChatScreen} />
@@ -88,3 +128,21 @@ export {
   authStack,
   MapStackNavigator,
 };
+const styles = StyleSheet.create({
+  topBarChatIcon: {
+    color: "#fff",
+    flexDirection: "row",
+    borderColor: "#fff",
+    fontSize: 25,
+  },
+  iconPosition: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#fff",
+    borderWidth: 1,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    marginRight: 10,
+  },
+});

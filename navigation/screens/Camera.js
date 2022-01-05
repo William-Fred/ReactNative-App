@@ -45,13 +45,17 @@ export default function CameraScreen({ navigation }) {
     };
   }, []);
 
-  //Take pictures
+  //Take pictures with camera
   const takePicture = async () => {
     if (camera) {
-      const photo = await camera.takePictureAsync(null);
-      setImage(photo.uri);
+      const photo = await camera
+        .takePictureAsync({
+          exif: true,
+          quality: 0.1,
+        })
+        .catch(console.error);
+      setImage(photo);
       console.log(photo);
-      setPickedImage([]);
     }
   };
   //Pick images from media library
@@ -72,15 +76,15 @@ export default function CameraScreen({ navigation }) {
     }
   };
 
-  //convert
-  const maniPulateImage = async () => {
-    const manipResult = await manipulateAsync(image, [{ rotate: 0 }], {
-      compress: 0.1,
-      format: SaveFormat.JPEG,
-    });
-    console.log(manipResult.uri);
-    // setImage(manipResult);
-  };
+  //convert to smaller file
+  // const maniPulateImage = async () => {
+  //   const manipResult = await manipulateAsync(image, [{ rotate: 0 }], {
+  //     compress: 0.1,
+  //     format: SaveFormat.JPEG,
+  //   });
+  //   console.log(manipResult.uri);
+  //   setImage(manipResult);
+  // };
   //Toggle between full scale picture and small size picture when the user has taken a pciture from camera
   const toogleZoom = () => {
     console.log("toogle");
@@ -111,12 +115,12 @@ export default function CameraScreen({ navigation }) {
                 onPress={() => pickImage()}
               ></Ionicons>
             </View>
-            <View>
+            {/* <View>
               <Button
                 title="compress"
                 onPress={() => maniPulateImage()}
               ></Button>
-            </View>
+            </View> */}
             <View>
               <Pressable style={styles.buttton_parent}>
                 <Pressable
@@ -130,7 +134,12 @@ export default function CameraScreen({ navigation }) {
                 style={styles.saveIcon}
                 name="checkmark-outline"
                 onPress={() =>
-                  navigation.navigate("savePhoto", { pickedImage, image })
+                  navigation.navigate(
+                    "savePhoto",
+                    { pickedImage, image },
+                    setPickedImage([]),
+                    setImage([])
+                  )
                 }
               ></Ionicons>
             </View>

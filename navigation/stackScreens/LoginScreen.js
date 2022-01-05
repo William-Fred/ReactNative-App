@@ -34,7 +34,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#FFF", "#111D4A"]}
+        colors={["#214F4B", "#8B9D83"]}
         style={styles.linearGradient}
       >
         <View style={styles.topSection}>
@@ -60,16 +60,16 @@ export default function LoginScreen({ navigation }) {
             ></TextInput>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.loginButton} onPress={signIn}>
-                <Text style={styles.loginText}>Logg in</Text>
+                <Text style={styles.loginText}>Login</Text>
               </TouchableOpacity>
             </View>
           </View>
 
           <View style={styles.bottomTextContainer}>
             <TouchableOpacity>
-              <Text style={styles.bottomText}>Forgott password?</Text>
+              <Text style={styles.bottomText}>Forgot password?</Text>
             </TouchableOpacity>
-            <Text style={styles.bottomText}>Dont have any accout?</Text>
+            <Text style={styles.bottomText}>Don't have any accout?</Text>
             <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
               <Text style={styles.signUpButton}>Sign up here</Text>
             </TouchableOpacity>
@@ -85,8 +85,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   linearGradient: {
-    // height: "100%",
-    // width: "100%",
     flex: 1,
   },
   imageStyle: {
@@ -107,10 +105,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
-    marginTop: 50,
+    marginTop: 0,
   },
   input: {
-    height: "50%",
+    height: "30%",
     width: "80%",
     borderWidth: 2,
     borderColor: "rgba(255, 255, 255, 0.1)",
@@ -122,7 +120,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   textInput: {
-    color: "#333",
+    color: "#214F4B",
     width: "70%",
     fontSize: 18,
     margin: 10,
@@ -133,7 +131,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     backgroundColor: "transparent",
     alignItems: "center",
-    flex: 0.2,
+    flex: 0.1,
   },
   image: {
     marginTop: 25,
@@ -142,7 +140,6 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     borderWidth: 2,
     borderColor: "rgba(255,255,255, 0.2)",
-    // borderBottomColor: "rgba(255,255,255, 0.2)",
     shadowColor: "rgba(121, 125, 129, 1) ",
     shadowOffset: { width: 2, height: 2 },
   },
@@ -158,11 +155,13 @@ const styles = StyleSheet.create({
   bottomText: {
     color: "#fff",
     margin: 5,
+    fontSize: 16,
   },
   loginButton: {
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: "rgba(115, 29, 6, 0.2)",
+    backgroundColor: "#214F4B",
+    opacity: 0.2,
     marginTop: 20,
     width: 100,
     height: 30,
@@ -179,6 +178,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     margin: 5,
     textDecorationLine: "underline",
+    fontSize: 16,
+    color: "#214F4B",
   },
 });
 
