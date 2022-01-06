@@ -10,6 +10,7 @@ import {
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 export default function ChatUsersScreen({ navigation }, props) {
+  console.log(props);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {

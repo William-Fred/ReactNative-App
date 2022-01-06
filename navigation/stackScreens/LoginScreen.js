@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }) {
         <View style={styles.topSection}>
           <Image
             style={styles.image}
-            source={require("./../../images/nature.jpg")}
+            source={require("./../../images/picconTransparentCrop.png")}
           ></Image>
         </View>
 
@@ -134,12 +134,12 @@ const styles = StyleSheet.create({
     flex: 0.1,
   },
   image: {
-    marginTop: 25,
-    height: 170,
-    width: 170,
+    marginTop: 10,
+    height: 250,
+    width: 250,
     borderRadius: 150,
-    borderWidth: 2,
-    borderColor: "rgba(255,255,255, 0.2)",
+    // borderWidth: 4,
+    // borderColor: "rgba(0,0,0, 0.5)",
     shadowColor: "rgba(121, 125, 129, 1) ",
     shadowOffset: { width: 2, height: 2 },
   },

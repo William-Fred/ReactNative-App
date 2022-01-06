@@ -40,6 +40,9 @@ function ProfilePage(props, { navigation }) {
       });
   };
   console.log(userPosts);
+  userPosts
+    .sort((a, b) => (a.creation.seconds > b.creation.seconds ? 1 : -1))
+    .reverse();
   return (
     <View style={styles.container}>
       <Modal

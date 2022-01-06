@@ -27,6 +27,9 @@ export default function ImageFeed() {
         setImages(img);
       });
   };
+  images
+    .sort((a, b) => (a.creation.seconds > b.creation.seconds ? 1 : -1))
+    .reverse();
   return (
     <View styles={styles.container}>
       <LinearGradient colors={["#214F4B", "#8B9D83"]}>

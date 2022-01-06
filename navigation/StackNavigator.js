@@ -109,7 +109,7 @@ const HomeStackNavigator = ({ navigation }) => {
                 name="ios-chatbubbles-outline"
                 style={styles.topBarChatIcon}
                 onPress={() => {
-                  navigation.navigate("Chat");
+                  navigation.navigate("ChatUsersScreen");
                 }}
               />
             </View>

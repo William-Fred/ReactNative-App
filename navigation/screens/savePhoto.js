@@ -8,7 +8,10 @@ import {
   TouchableOpacity,
   Button,
   Alert,
+  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
@@ -65,7 +68,11 @@ export default function savePhoto(props, { navigation }) {
     //Put- uploads data to this reference's location.
     const task = firebase.storage().ref().child(path).put(blob);
     const taskProgress = (snapshot) => {
-      console.log(`transferred: ${snapshot.bytesTransferred}`);
+      var bytes = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(
+        // `transferred: ${snapshot.bytesTransferred} / ${snapshot.totalBytes} `
+        bytes + "% done"
+      );
     };
 
     const taskCompleted = () => {
@@ -104,120 +111,168 @@ export default function savePhoto(props, { navigation }) {
   console.log(longitude);
   console.log(latitude);
   console.log(sentUri);
-
+  const keyboardVerticalOffset =
+    Platform.OS === "ios" ? 75 : 0 && Platform.OS === "web";
+  const behavior =
+    Platform.OS === "ios"
+      ? "height"
+      : "height" && Platform.OS === "android"
+      ? "padding"
+      : "padding";
   if (props.route.params.pickedImage.length === 0) {
     return (
-      <View style={styles.container}>
+      <LinearGradient style={{ flex: 1 }} colors={["#214F4B", "#fff"]}>
+        {/* <View style={styles.container}> */}
+        <KeyboardAvoidingView
+          behavior={behavior}
+          keyboardVerticalOffset={keyboardVerticalOffset}
+          style={styles.container}
+        >
+          <View style={styles.top_section}>
+            <TouchableOpacity
+              onPress={toogleZoom}
+              style={isZoomed ? styles.largeImage : styles.smallImage}
+            >
+              <Image
+                source={{ uri: props.route.params.image.uri }}
+                style={isZoomed ? styles.largeImage : styles.smallImage}
+              />
+              {isZoomed && (
+                <Ionicons name="arrow-back" style={styles.icon}></Ionicons>
+              )}
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Type in image text..."
+              onChangeText={(caption) => setCaption(caption)}
+              style={styles.textInput}
+              clearButtonMode="while-editing"
+              // clearTextOnFocus={true}
+              multiline={true}
+              blurOnSubmit={true}
+              onSubmitEditing={() => {
+                Keyboard.dismiss();
+              }}
+            ></TextInput>
+          </View>
+
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity onPress={saveImage}>
+              <Text>Save image!</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+        {/* </View> */}
+      </LinearGradient>
+    );
+  }
+
+  return (
+    <LinearGradient style={{ flex: 1 }} colors={["#214F4B", "#fff"]}>
+      {/* <View style={styles.container}> */}
+      <KeyboardAvoidingView
+        behavior={behavior}
+        keyboardVerticalOffset={keyboardVerticalOffset}
+        style={styles.container}
+      >
         <View style={styles.top_section}>
           <TouchableOpacity
             onPress={toogleZoom}
             style={isZoomed ? styles.largeImage : styles.smallImage}
           >
             <Image
-              source={{ uri: props.route.params.image.uri }}
+              source={{ uri: props.route.params.pickedImage.uri }}
               style={isZoomed ? styles.largeImage : styles.smallImage}
             />
             {isZoomed && (
               <Ionicons name="arrow-back" style={styles.icon}></Ionicons>
             )}
           </TouchableOpacity>
+        </View>
+
+        <View style={styles.inputContainer}>
           <TextInput
             placeholder="Type in image text..."
+            placeholderTextColor="#fff"
             onChangeText={(caption) => setCaption(caption)}
             style={styles.textInput}
+            clearButtonMode="while-editing"
+            multiline={true}
+            blurOnSubmit={true}
+            onSubmitEditing={() => {
+              Keyboard.dismiss();
+            }}
           ></TextInput>
         </View>
+
         <View
           style={{
             alignItems: "center",
             justifyContent: "center",
-            margin: 100,
           }}
         >
-          <Button
-            style={{ marginTop: 200, marginLeft: 200 }}
-            title="Save image"
-            onPress={saveImage}
-          ></Button>
+          <TouchableOpacity onPress={saveImage}>
+            <Text>Save image!</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-    );
-  }
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.top_section}>
-        <TouchableOpacity
-          onPress={toogleZoom}
-          style={isZoomed ? styles.largeImage : styles.smallImage}
-        >
-          <Image
-            source={{ uri: props.route.params.pickedImage.uri }}
-            style={isZoomed ? styles.largeImage : styles.smallImage}
-          />
-          {isZoomed && (
-            <Ionicons name="arrow-back" style={styles.icon}></Ionicons>
-          )}
-        </TouchableOpacity>
-        <TextInput
-          placeholder="Type in image text..."
-          onChangeText={(caption) => setCaption(caption)}
-          style={styles.textInput}
-        ></TextInput>
-      </View>
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          margin: 100,
-        }}
-      >
-        <Button
-          style={{ marginTop: 200, marginLeft: 200 }}
-          title="Save image"
-          onPress={saveImage}
-        ></Button>
-      </View>
-    </View>
+      </KeyboardAvoidingView>
+      {/* </View> */}
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 10,
   },
   top_section: {
-    height: "50%",
+    marginTop: 10,
+    height: "60%",
     width: "100%",
     borderWidth: 3,
     borderColor: "black",
-    padding: 10,
-    flexDirection: "row",
   },
   image: {
     width: 120,
     height: 120,
     borderRadius: 10,
   },
+  inputContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    width: "100%",
+  },
   textInput: {
     height: 120,
-    width: 230,
+    width: "100%",
     borderWidth: 2,
     borderRadius: 10,
-    marginLeft: 7,
+    borderColor: "#8B9D83",
+    backgroundColor: "#214F4B",
+    opacity: 0.4,
+    fontSize: 20,
+    color: "#fff",
   },
   smallImage: {
-    height: 120,
-    width: 120,
-    borderRadius: 15,
+    // height: 120,
+    // width: 120,
+    // borderRadius: 15,
+    flex: 1,
   },
 
   largeImage: {
-    height: "100%",
-    width: "100%",
+    flex: 1,
   },
   icon: {
     fontSize: 30,

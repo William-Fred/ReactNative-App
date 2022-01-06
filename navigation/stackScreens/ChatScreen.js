@@ -12,17 +12,26 @@ import { Constants } from "expo";
 import io from "socket.io-client/dist/socket.io";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+
+//imports for redux
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+//Method fetchUser from redux-actions
+import { fetchUser, fetchImagePosts } from "../../redux/actions/actions";
+
 const SOCKET_URL = "http://192.168.0.4:3000";
 
-export default class ChatScreen extends Component {
+export class ChatScreen extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.route);
+    console.log(this.props);
     this.state = {
-      reciever: this.props.route.params,
       connected: false,
       chatMessage: "",
       chatMessages: [],
+      username: "",
+      receiver: this.props.route.params.users.Name,
+      combinedList: [],
     };
   }
 
@@ -38,12 +47,16 @@ export default class ChatScreen extends Component {
   //Subbmitting chattmessages and then clears the state after the message is sent
   submitChatMessage() {
     this.socket.emit("chat message", this.state.chatMessage);
-    this.setState({ chatMessage: "" });
+    this.setState({
+      chatMessage: "",
+      receiver: this.props.route.params.users.Name,
+    });
     console.log(this.state);
   }
 
-  //Creating an event for chat messages with socket.on
+  //Creating an event for chat messages with socket.on. Event is named "chat message"
   componentDidMount() {
+    this.props.fetchUser();
     this.connectSocket();
     this.socket.on("chat message", (message) => {
       this.setState({ chatMessages: [...this.state.chatMessages, message] });
@@ -52,6 +65,7 @@ export default class ChatScreen extends Component {
   }
 
   render() {
+    const { currentUser } = this.props;
     const keyboardVerticalOffset =
       Platform.OS === "ios" ? 90 : 0 && Platform.OS === "web";
     const behavior =
@@ -60,44 +74,109 @@ export default class ChatScreen extends Component {
         : "height" && Platform.OS === "android"
         ? "padding"
         : "padding";
+
     const chatMessages = this.state.chatMessages.map((chatMessage) => (
-      <Text key={chatMessage}>{chatMessage}</Text>
+      <View>
+        <Text key={chatMessage}>{chatMessage}</Text>
+      </View>
     ));
 
-    return (
-      <KeyboardAvoidingView
-        style={styles.container}
-        enabled={true}
-        behavior={behavior}
-        keyboardVerticalOffset={keyboardVerticalOffset}
-      >
-        {chatMessages}
-        <TextInput
-          autoCorrect={false}
-          style={styles.textInput}
-          onSubmitEditing={() => {
-            this.submitChatMessage();
-          }}
-          value={this.state.chatMessage}
-          placeholder="Text message.."
-          onChangeText={(chatMessage) => {
-            this.setState({ chatMessage });
-          }}
-        ></TextInput>
-      </KeyboardAvoidingView>
-    );
+    const result = [];
+    result.push({
+      receiver: this.state.receiver,
+      username: this.props.currentUser.Name,
+      chatMessages: [this.state.chatMessages],
+    });
+
+    console.log(result);
+    if (result[0].receiver === this.state.receiver) {
+      return (
+        <KeyboardAvoidingView
+          style={styles.container}
+          enabled={true}
+          behavior={behavior}
+          keyboardVerticalOffset={keyboardVerticalOffset}
+        >
+          <FlatList
+            data={result}
+            numColumns={1}
+            style={styles.list}
+            renderItem={({ item }) => (
+              <View>
+                <Text>Message sent to: {item.receiver}</Text>
+                <Text style={styles.ChatText}>{item.chatMessages}</Text>
+              </View>
+            )}
+          ></FlatList>
+          <TextInput
+            autoCorrect={false}
+            style={styles.textInput}
+            onSubmitEditing={() => {
+              this.submitChatMessage();
+            }}
+            value={this.state.chatMessage}
+            placeholder="Text message.."
+            onChangeText={(chatMessage) => {
+              this.setState({ chatMessage });
+            }}
+          ></TextInput>
+        </KeyboardAvoidingView>
+      );
+    }
+    if (this.state.combinedList.receiver === this.state.username)
+      return (
+        <KeyboardAvoidingView
+          style={styles.container}
+          enabled={true}
+          behavior={behavior}
+          keyboardVerticalOffset={keyboardVerticalOffset}
+        >
+          <View style={styles.chatContainer}>
+            <Text style={styles.title}>Chatt with piccon!!</Text>
+          </View>
+          {/* {chatMessages} */}
+
+          <FlatList
+            data={chatMessages}
+            style={styles.list}
+            renderItem={({ item }) => (
+              <View>
+                {/* <Text>{}</Text> */}
+                <Text style={styles.ChatText}>{item}</Text>
+              </View>
+            )}
+          ></FlatList>
+          <TextInput
+            autoCorrect={false}
+            style={styles.textInput}
+            onSubmitEditing={() => {
+              this.submitChatMessage();
+            }}
+            value={this.state.chatMessage}
+            placeholder="Text message.."
+            onChangeText={(chatMessage) => {
+              this.setState({ chatMessage });
+            }}
+          ></TextInput>
+        </KeyboardAvoidingView>
+      );
   }
 }
-
+const mapStateToProps = (store) => ({
+  currentUser: store.userState.currentUser,
+  posts: store.userState.posts,
+});
+const mapDispatchProps = (dispatch) =>
+  bindActionCreators({ fetchUser, fetchImagePosts }, dispatch);
+export default connect(mapStateToProps, mapDispatchProps)(ChatScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ecf0f1",
+    backgroundColor: "#214F4B",
   },
   ChatText: {
-    borderColor: "#fff",
-    borderWidth: 3,
-    borderRadius: 50,
+    color: "#fff",
+    fontSize: 20,
   },
   textInput: {
     position: "absolute",
@@ -105,7 +184,22 @@ const styles = StyleSheet.create({
     bottom: 4,
     right: 0,
     height: 50,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 10,
+    borderColor: "#fff",
+    color: "#fff",
+  },
+  chatContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    color: "#fff",
+    fontSize: 30,
+    fontStyle: "italic",
+    textDecorationLine: "underline",
+  },
+  list: {
+    marginTop: 20,
   },
 });

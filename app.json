@@ -3,9 +3,15 @@
     "name": "myFirstNative",
     "slug": "myFirstNative",
     "version": "1.0.0",
+    "splash": {
+      "image": "./images/picconTransparent.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#214F4B"
+    },
     "assetBundlePatterns": [
       "**/*"
     ]
+    
   },
   "name": "myFirstNative"
 }
