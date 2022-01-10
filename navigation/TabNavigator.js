@@ -60,7 +60,7 @@ const BottomTabNavigator = (props) => {
           color = "#fff";
           if (RouteName === "Home") {
             iconName = focused ? "home" : "home-outline";
-          } else if (RouteName === "Cameras") {
+          } else if (RouteName === "Camera") {
             iconName = focused ? "camera" : "camera-outline";
           } else if (RouteName === "Profile") {
             iconName = focused ? "person" : "person-outline";
@@ -79,7 +79,7 @@ const BottomTabNavigator = (props) => {
         options={{ tabBarStyle: { backgroundColor: "#214F4B" } }}
       />
       <Tab.Screen
-        name="Cameras"
+        name="Camera"
         component={CameraStackNavigator}
         options={{
           tabBarStyle: {

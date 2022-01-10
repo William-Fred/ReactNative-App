@@ -47,7 +47,15 @@ export class HomeScreen extends Component {
             alignItems: "center",
           }}
         >
-          <Text>{currentUser.Name} is logged in</Text>
+          <Text
+            style={{
+              color: "#fff",
+              textDecorationLine: "underline",
+              marginTop: 10,
+            }}
+          >
+            {currentUser.Name} is logged in
+          </Text>
         </View>
         <ImageFeed style={{ marginTop: 100 }} />
       </View>

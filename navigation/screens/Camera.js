@@ -18,6 +18,7 @@ import * as MediaLibrary from "expo-media-library";
 import { Platform } from "expo-modules-core";
 
 export default function CameraScreen({ navigation }) {
+  console.log(navigation);
   const [hasGalleryPermission, setGalleryPermission] = useState(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);

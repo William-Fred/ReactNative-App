@@ -24,14 +24,22 @@ const CameraStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Camera"
+        name="Cameras"
         component={CameraScreen}
-        options={{ headerStyle: { backgroundColor: "#214F4B" } }}
+        options={{
+          title: "Camera",
+          headerTintColor: "#fff",
+          headerStyle: { backgroundColor: "#214F4B" },
+        }}
       />
       <Stack.Screen
         name="savePhoto"
         component={savePhoto}
-        options={{ headerStyle: { backgroundColor: "#214F4B" } }}
+        options={{
+          title: "Save photo",
+          headerTintColor: "#fff",
+          headerStyle: { backgroundColor: "#214F4B" },
+        }}
       />
     </Stack.Navigator>
   );
@@ -60,6 +68,7 @@ const MapStackNavigator = () => {
         name="Map"
         component={MapScreen}
         options={{
+          headerTintColor: "#fff",
           headerStyle: { backgroundColor: "#214F4B" },
         }}
       />
@@ -79,6 +88,7 @@ const authStack = () => {
         name="Signup"
         component={SignupScreen}
         options={{
+          headerTintColor: "#fff",
           title: "",
           headerStyle: {
             backgroundColor: "#214F4B",
@@ -109,7 +119,7 @@ const HomeStackNavigator = ({ navigation }) => {
                 name="ios-chatbubbles-outline"
                 style={styles.topBarChatIcon}
                 onPress={() => {
-                  navigation.navigate("ChatUsersScreen");
+                  navigation.navigate("Chat");
                 }}
               />
             </View>

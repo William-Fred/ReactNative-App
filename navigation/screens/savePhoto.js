@@ -218,8 +218,8 @@ export default function savePhoto(props, { navigation }) {
             justifyContent: "center",
           }}
         >
-          <TouchableOpacity onPress={saveImage}>
-            <Text>Save image!</Text>
+          <TouchableOpacity style={styles.button} onPress={saveImage}>
+            <Text style={styles.buttonText}>Save image!</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -239,8 +239,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: "60%",
     width: "100%",
-    borderWidth: 3,
-    borderColor: "black",
+    borderWidth: 1,
+    borderColor: "#fff",
+    borderRadius: 10,
   },
   image: {
     width: 120,
@@ -269,6 +270,7 @@ const styles = StyleSheet.create({
     // width: 120,
     // borderRadius: 15,
     flex: 1,
+    borderRadius: 10,
   },
 
   largeImage: {
@@ -283,5 +285,22 @@ const styles = StyleSheet.create({
     top: 10,
     borderWidth: 3,
     borderColor: "white",
+  },
+  button: {
+    marginTop: 10,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "#214F4B",
+
+    width: 100,
+    height: 40,
+    textAlign: "center",
+    borderWidth: 1,
+    borderColor: "#fff",
+  },
+  buttonText: {
+    textAlign: "center",
+    marginTop: 10,
+    color: "#fff",
   },
 });

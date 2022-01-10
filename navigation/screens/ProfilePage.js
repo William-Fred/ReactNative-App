@@ -8,7 +8,7 @@ import {
   Modal,
   Pressable,
   FlatList,
-  Button,
+  RefreshControl,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
@@ -18,11 +18,13 @@ import "firebase/compat/firestore";
 function ProfilePage(props, { navigation }) {
   const { currentUser, posts } = props;
   const [modalVisible, setModalVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
   useEffect(() => {
     getUserPosts();
   }, []);
   const getUserPosts = () => {
+    setRefreshing(true);
     firebase
       .firestore()
       .collection("posts")
@@ -37,6 +39,7 @@ function ProfilePage(props, { navigation }) {
           return { id, ...data };
         });
         setUserPosts(posts);
+        setRefreshing(false);
       });
   };
   console.log(userPosts);
@@ -57,7 +60,10 @@ function ProfilePage(props, { navigation }) {
         <View style={styles.modalView}>
           <Pressable
             onPress={() =>
-              navigation.navigate("Camera", setModalVisible(!modalVisible))
+              props.navigation.navigate(
+                "Camera",
+                setModalVisible(!modalVisible)
+              )
             }
           >
             <Text style={styles.modalText}>Pick profile picture</Text>
@@ -70,17 +76,17 @@ function ProfilePage(props, { navigation }) {
       {/* <View> */}
       <View style={styles.first}>
         <LinearGradient colors={["#214F4B", "#8B9D83"]} style={styles.linear}>
-          <Pressable onPress={() => setModalVisible(true)}>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
               style={styles.image}
               source={require("./../../images/nature.jpg")}
             ></Image>
-          </Pressable>
+          </TouchableOpacity>
           <Text style={styles.userText}>{currentUser.Name}</Text>
           <Text style={styles.userText}>{currentUser.Email}</Text>
-          <Pressable style={styles.button} onPress={getUserPosts}>
-            <Text style={styles.buttonText}>Get latest images</Text>
-          </Pressable>
+          {/* <TouchableOpacity style={styles.button} onPress={getUserPosts}>
+            <Text style={styles.buttonText}>Get latest images</Text> */}
+          {/* </TouchableOpacity> */}
         </LinearGradient>
       </View>
       <View style={styles.mainFeed}>
@@ -88,6 +94,9 @@ function ProfilePage(props, { navigation }) {
           numColumns={3}
           horizontal={false}
           data={userPosts}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getUserPosts} />
+          }
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => props.navigation.navigate("Maps")}>
               <Image
@@ -205,9 +214,12 @@ const styles = StyleSheet.create({
   },
   mainFeed: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    paddingTop: 25,
+    //
+
     backgroundColor: "#8B9D83",
+    width: "100%",
+    flexDirection: "row",
   },
   button: {
     marginTop: 10,
