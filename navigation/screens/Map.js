@@ -7,9 +7,12 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  Modal,
   Pressable,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import ImageModal from "react-native-image-modal";
+
 import { connect } from "react-redux";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
@@ -18,7 +21,8 @@ function Map(props) {
   const posts = props.posts;
 
   const [updatedPost, setUpdatedPosts] = useState([]);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [object, setObject] = useState([]);
   useEffect(() => {
     getUserPosts();
   }, []);
@@ -37,11 +41,13 @@ function Map(props) {
           return { id, ...data };
         });
         setUpdatedPosts(posts);
-        console.log(updatedPost);
+
+        // console.log(updatedPost);
       });
   };
-  // console.log(posts);
-  console.log(updatedPost);
+
+  // console.log(updatedPost);
+
   return (
     <View style={styles.container}>
       <MapView
@@ -58,10 +64,9 @@ function Map(props) {
             name="refresh-circle"
             style={styles.icon}
             onPress={getUserPosts}
-          >
-            {/* <Text style={styles.text}>Get latest</Text> */}
-          </Ionicons>
+          ></Ionicons>
         </View>
+
         {updatedPost.map((val, index) => {
           return (
             <Marker
@@ -71,6 +76,15 @@ function Map(props) {
               }}
               key={index}
               title={val.caption}
+              onPress={() => {
+                setObject({
+                  image: val.downloadURL,
+                  longitude: val.GPSLatitude,
+                  latitude: val.GPSLongitude,
+                  caption: val.caption,
+                }),
+                  props.navigation.navigate("MapImageInfo", object);
+              }}
             >
               <Image
                 key={index}

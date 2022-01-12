@@ -73,7 +73,6 @@ function ProfilePage(props, { navigation }) {
           </Pressable>
         </View>
       </Modal>
-      {/* <View> */}
       <View style={styles.first}>
         <LinearGradient colors={["#214F4B", "#8B9D83"]} style={styles.linear}>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -84,9 +83,6 @@ function ProfilePage(props, { navigation }) {
           </TouchableOpacity>
           <Text style={styles.userText}>{currentUser.Name}</Text>
           <Text style={styles.userText}>{currentUser.Email}</Text>
-          {/* <TouchableOpacity style={styles.button} onPress={getUserPosts}>
-            <Text style={styles.buttonText}>Get latest images</Text> */}
-          {/* </TouchableOpacity> */}
         </LinearGradient>
       </View>
       <View style={styles.mainFeed}>

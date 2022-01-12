@@ -11,6 +11,7 @@ import LoginScreen from "./stackScreens/LoginScreen";
 import SignupScreen from "./stackScreens/SignupScreen";
 import ChatUsersScreen from "./stackScreens/ChatUsersScreen";
 import MapScreen from "./screens/Map";
+import MapImageInfo from "./screens/MapImageInfo";
 import LogOut from "../components/LogOut";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import firebase from "firebase/compat/app";
@@ -67,6 +68,14 @@ const MapStackNavigator = () => {
       <Stack.Screen
         name="Map"
         component={MapScreen}
+        options={{
+          headerTintColor: "#fff",
+          headerStyle: { backgroundColor: "#214F4B" },
+        }}
+      />
+      <Stack.Screen
+        name="MapImageInfo"
+        component={MapImageInfo}
         options={{
           headerTintColor: "#fff",
           headerStyle: { backgroundColor: "#214F4B" },

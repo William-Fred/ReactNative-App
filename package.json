@@ -35,7 +35,9 @@
     "react-dom": "17.0.1",
     "react-native": "0.64.2",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-image-modal": "^2.0.4",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-maps": "0.28.1",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
@@ -46,8 +48,7 @@
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
     "sharp": "^0.29.3",
-    "socket.io-client": "^4.3.2",
-    "react-native-maps": "0.28.1"
+    "socket.io-client": "^4.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
