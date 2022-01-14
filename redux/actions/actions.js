@@ -6,6 +6,8 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
+//Define action methods to be called.
+//Fetch all users and all posts from database
 export function fetchUser() {
   return (dispatch) => {
     firebase

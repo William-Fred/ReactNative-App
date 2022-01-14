@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Image,
   Button,
+  Platform,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import firebase from "firebase/compat/app";

@@ -11,18 +11,13 @@ import {
   Pressable,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import ImageModal from "react-native-image-modal";
-
-import { connect } from "react-redux";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-function Map(props) {
-  const posts = props.posts;
-
+function MapScreen(props) {
   const [updatedPost, setUpdatedPosts] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [object, setObject] = useState([]);
+
+  //Refresh images to show up on the map, if new images are uploaded.
   useEffect(() => {
     getUserPosts();
   }, []);
@@ -41,15 +36,12 @@ function Map(props) {
           return { id, ...data };
         });
         setUpdatedPosts(posts);
-
-        // console.log(updatedPost);
       });
   };
 
-  // console.log(updatedPost);
-
+  //Map is always starting on initial region coordinates, Gothenburg.
   return (
-    <View style={styles.container}>
+    <View>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -66,7 +58,7 @@ function Map(props) {
             onPress={getUserPosts}
           ></Ionicons>
         </View>
-
+        {/* looping through every object in updatedPost list and placing a marker with a image and the objects coordinates, for each object in the list */}
         {updatedPost.map((val, index) => {
           return (
             <Marker
@@ -76,18 +68,8 @@ function Map(props) {
               }}
               key={index}
               title={val.caption}
-              onPress={() => {
-                setObject({
-                  image: val.downloadURL,
-                  longitude: val.GPSLatitude,
-                  latitude: val.GPSLongitude,
-                  caption: val.caption,
-                }),
-                  props.navigation.navigate("MapImageInfo", object);
-              }}
             >
               <Image
-                key={index}
                 style={{ width: 50, height: 50, borderRadius: 100 }}
                 source={{ uri: val.downloadURL }}
               ></Image>
@@ -98,27 +80,18 @@ function Map(props) {
     </View>
   );
 }
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-  posts: store.userState.posts,
-});
-export default connect(mapStateToProps, null)(Map);
+export default MapScreen;
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   top: {
     marginLeft: 10,
     height: "5%",
     backgroundColor: "transparent",
   },
-  map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-  },
+
   button: {
     backgroundColor: "#fff",
     width: "50%",
@@ -138,5 +111,3 @@ const styles = StyleSheet.create({
     color: "#214F4B",
   },
 });
-// console.log(posts);
-// const [posts, setPosts] = useState(props.posts);

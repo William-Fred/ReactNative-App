@@ -1,22 +1,12 @@
 import React, { Component } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  ScrollContainer,
-  ImageBackground,
-  Image,
-  FlatList,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 //Import sign out button
 import ImageFeed from "../../components/ImageFeed";
 //imports for redux
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-//Method fetchUser from redux-actions
+//Method fetchUser, fethImagePosts from redux-actions
 import { fetchUser, fetchImagePosts } from "../../redux/actions/actions";
 
 export class HomeScreen extends Component {
@@ -76,7 +66,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#214F4B",
   },
-  // userText: {
-  //   color: "transparant",
-  // },
 });

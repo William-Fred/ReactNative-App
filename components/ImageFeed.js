@@ -19,7 +19,7 @@ export default function ImageFeed() {
     fetchAllPosts();
   }, []);
 
-  //Fetch all posts from
+  //Fetch all posts from database
   const fetchAllPosts = () => {
     setRefreshing(true);
     firebase
@@ -74,8 +74,6 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    // borderWidth: 4,
-    // borderColor: "#fff",
     backgroundColor: "transparent",
   },
   textCaption: {

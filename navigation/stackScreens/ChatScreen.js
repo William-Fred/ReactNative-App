@@ -8,16 +8,8 @@ import {
   Platform,
   FlatList,
 } from "react-native";
-import { Constants } from "expo";
 import io from "socket.io-client/dist/socket.io";
-import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
-
-// //imports for redux
-// import { connect } from "react-redux";
-// import { bindActionCreators } from "redux";
-// //Method fetchUser from redux-actions
-// import { fetchUser, fetchImagePosts } from "../../redux/actions/actions";
 
 const SOCKET_URL = "http://172.20.10.2:3000";
 
@@ -78,15 +70,6 @@ export default class ChatScreen extends Component {
       </View>
     ));
 
-    // const result = [];
-    // result.push({
-    //   receiver: this.state.receiver,
-    //   username: this.props.currentUser.Name,
-    //   chatMessages: [this.state.chatMessages],
-    // });
-
-    // console.log(result);
-    // if (result[0].receiver === this.state.receiver) {
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -98,17 +81,6 @@ export default class ChatScreen extends Component {
           <Text style={styles.title}>Chatt with piccon!!</Text>
         </View>
         {chatMessages}
-
-        {/* <FlatList
-          data={chatMessages}
-          numColumns={1}
-          style={styles.list}
-          renderItem={({ item }) => (
-            <View>
-              <Text style={styles.ChatText}>{item.chatMessages}</Text>
-            </View>
-          )}
-        ></FlatList> */}
         <TextInput
           autoCorrect={false}
           style={styles.textInput}
@@ -125,44 +97,6 @@ export default class ChatScreen extends Component {
       </KeyboardAvoidingView>
     );
   }
-  // if (this.state.combinedList.receiver === this.state.username)
-  //   return (
-  //     <KeyboardAvoidingView
-  //       style={styles.container}
-  //       enabled={true}
-  //       behavior={behavior}
-  //       keyboardVerticalOffset={keyboardVerticalOffset}
-  //     >
-  //       <View style={styles.chatContainer}>
-  //         <Text style={styles.title}>Chatt with piccon!!</Text>
-  //       </View>
-  //       {/* {chatMessages} */}
-
-  //       <FlatList
-  //         data={chatMessages}
-  //         style={styles.list}
-  //         renderItem={({ item }) => (
-  //           <View>
-  //             {/* <Text>{}</Text> */}
-  //             <Text style={styles.ChatText}>{item}</Text>
-  //           </View>
-  //         )}
-  //       ></FlatList>
-  //       <TextInput
-  //         autoCorrect={false}
-  //         style={styles.textInput}
-  //         onSubmitEditing={() => {
-  //           this.submitChatMessage();
-  //         }}
-  //         value={this.state.chatMessage}
-  //         placeholder="Text message.."
-  //         onChangeText={(chatMessage) => {
-  //           this.setState({ chatMessage });
-  //         }}
-  //       ></TextInput>
-  //     </KeyboardAvoidingView>
-  //   );
-  // }
 }
 
 const styles = StyleSheet.create({

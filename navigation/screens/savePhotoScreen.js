@@ -10,6 +10,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Keyboard,
+  Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,7 +18,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 require("firebase/firestore");
 require("firebase/firebase-firestore-compat");
-export default function savePhoto(props, { navigation }) {
+export default function savePhotoScreen(props, { navigation }) {
   console.log(props.route.params);
   const [isZoomed, setIsZoomed] = useState(false);
   const [caption, setCaption] = useState("");
@@ -87,7 +88,7 @@ export default function savePhoto(props, { navigation }) {
   };
 
   //https://firebase.google.com/docs/firestore/manage-data/add-data#web-version-8_2
-  //Save post to userPosts and add attributes to userPost doc
+  //Save post to userPosts and add document and attributes to userPost collection
   const savePost = (downloadURL) => {
     firebase
       .firestore()
@@ -108,9 +109,7 @@ export default function savePhoto(props, { navigation }) {
         console.log(error);
       });
   };
-  console.log(longitude);
-  console.log(latitude);
-  console.log(sentUri);
+
   const keyboardVerticalOffset =
     Platform.OS === "ios" ? 75 : 0 && Platform.OS === "web";
   const behavior =
@@ -119,28 +118,22 @@ export default function savePhoto(props, { navigation }) {
       : "height" && Platform.OS === "android"
       ? "padding"
       : "padding";
+
+  //Checking if it are a image taken with the camera in the application or a image picked for the phones library.
+  //And returning a view for each to show the right image to the user.
   if (props.route.params.pickedImage.length === 0) {
     return (
       <LinearGradient style={{ flex: 1 }} colors={["#214F4B", "#fff"]}>
-        {/* <View style={styles.container}> */}
         <KeyboardAvoidingView
           behavior={behavior}
           keyboardVerticalOffset={keyboardVerticalOffset}
           style={styles.container}
         >
           <View style={styles.top_section}>
-            <TouchableOpacity
-              onPress={toogleZoom}
+            <Image
+              source={{ uri: props.route.params.image.uri }}
               style={isZoomed ? styles.largeImage : styles.smallImage}
-            >
-              <Image
-                source={{ uri: props.route.params.image.uri }}
-                style={isZoomed ? styles.largeImage : styles.smallImage}
-              />
-              {isZoomed && (
-                <Ionicons name="arrow-back" style={styles.icon}></Ionicons>
-              )}
-            </TouchableOpacity>
+            />
           </View>
 
           <View style={styles.inputContainer}>
@@ -149,7 +142,6 @@ export default function savePhoto(props, { navigation }) {
               onChangeText={(caption) => setCaption(caption)}
               style={styles.textInput}
               clearButtonMode="while-editing"
-              // clearTextOnFocus={true}
               multiline={true}
               blurOnSubmit={true}
               onSubmitEditing={() => {
@@ -169,32 +161,22 @@ export default function savePhoto(props, { navigation }) {
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
-        {/* </View> */}
       </LinearGradient>
     );
   }
 
   return (
     <LinearGradient style={{ flex: 1 }} colors={["#214F4B", "#fff"]}>
-      {/* <View style={styles.container}> */}
       <KeyboardAvoidingView
         behavior={behavior}
         keyboardVerticalOffset={keyboardVerticalOffset}
         style={styles.container}
       >
         <View style={styles.top_section}>
-          <TouchableOpacity
-            onPress={toogleZoom}
+          <Image
+            source={{ uri: props.route.params.pickedImage.uri }}
             style={isZoomed ? styles.largeImage : styles.smallImage}
-          >
-            <Image
-              source={{ uri: props.route.params.pickedImage.uri }}
-              style={isZoomed ? styles.largeImage : styles.smallImage}
-            />
-            {isZoomed && (
-              <Ionicons name="arrow-back" style={styles.icon}></Ionicons>
-            )}
-          </TouchableOpacity>
+          />
         </View>
 
         <View style={styles.inputContainer}>
@@ -223,7 +205,6 @@ export default function savePhoto(props, { navigation }) {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-      {/* </View> */}
     </LinearGradient>
   );
 }
@@ -266,16 +247,10 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   smallImage: {
-    // height: 120,
-    // width: 120,
-    // borderRadius: 15,
     flex: 1,
     borderRadius: 10,
   },
 
-  largeImage: {
-    flex: 1,
-  },
   icon: {
     fontSize: 30,
     textAlign: "center",

@@ -4,17 +4,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "./screens/HomeScreen";
 import CameraScreen from "./screens/Camera";
-import savePhoto from "./screens/savePhoto";
+import savePhotoScreen from "./screens/savePhotoScreen";
 import ChatScreen from "./stackScreens/ChatScreen";
 import ProfilePage from "./screens/ProfilePage";
 import LoginScreen from "./stackScreens/LoginScreen";
 import SignupScreen from "./stackScreens/SignupScreen";
 import ChatUsersScreen from "./stackScreens/ChatUsersScreen";
-import MapScreen from "./screens/Map";
-import MapImageInfo from "./screens/MapImageInfo";
+import MapScreen from "./screens/MapScreen";
 import LogOut from "../components/LogOut";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 //create stack navigator
@@ -35,7 +33,7 @@ const CameraStackNavigator = () => {
       />
       <Stack.Screen
         name="savePhoto"
-        component={savePhoto}
+        component={savePhotoScreen}
         options={{
           title: "Save photo",
           headerTintColor: "#fff",
@@ -73,14 +71,6 @@ const MapStackNavigator = () => {
           headerStyle: { backgroundColor: "#214F4B" },
         }}
       />
-      <Stack.Screen
-        name="MapImageInfo"
-        component={MapImageInfo}
-        options={{
-          headerTintColor: "#fff",
-          headerStyle: { backgroundColor: "#214F4B" },
-        }}
-      />
     </Stack.Navigator>
   );
 };
@@ -94,7 +84,7 @@ const authStack = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Signup"
+        name="SignupScreen"
         component={SignupScreen}
         options={{
           headerTintColor: "#fff",
@@ -136,7 +126,16 @@ const HomeStackNavigator = ({ navigation }) => {
         }}
       />
       <Stack.Screen name="ChatUsersScreen" component={ChatUsersScreen} />
-      <Stack.Screen name="Chat" component={ChatScreen} />
+      <Stack.Screen
+        name="Chat"
+        options={{
+          title: "Chat PicCon",
+          headerTintColor: "#fff",
+          headerTitleAlign: "center",
+          headerStyle: { backgroundColor: "#214F4B" },
+        }}
+        component={ChatScreen}
+      />
     </Stack.Navigator>
   );
 };

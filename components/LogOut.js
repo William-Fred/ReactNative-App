@@ -16,7 +16,6 @@ export default function LogOut() {
         style={styles.signOutIcon}
         onPress={onSignOut}
       ></Ionicons>
-      {/* <Button title="Log Out" color="#fff" onPress={onSignOut}></Button> */}
     </View>
   );
 }
