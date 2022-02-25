@@ -26,4 +26,4 @@ https://oblador.github.io/react-native-vector-icons/ {
   },
 
 This is a school project where i am trying to create a photo and chatt app kind of. 
-The application uses firebase/firebase auth and firestore for the data.
+The application uses firebase for handling data and authorization.
